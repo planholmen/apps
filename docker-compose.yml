@@ -1,0 +1,18 @@
+version: '3.1'
+services:
+  web:
+    container_name: 'planholmen-apps-web'
+    image: gustavkauman/docker-laravel:version-1.1.0-rc
+    expose:
+      - 9000
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www/
+    env_file:
+      - ./.env
+    environment:
+      XDEBUG_CONFIG: "remote_host=host.docker.internal"
+    external_links:
+      - planholmen-db:mysql
+    working_dir: /var/www
