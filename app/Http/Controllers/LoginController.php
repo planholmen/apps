@@ -46,9 +46,9 @@ class LoginController extends Controller
         if ($dbuser = User::where('email', '=', $user['user_email'])->get()->first()) {
 
             // User already exists, we log them in
-            Auth::loginUsingId($dbuser);
+            Auth::loginUsingId($dbuser->id);
 
-            return redirect('home');
+            return redirect()->route('home');
 
         } else {
 
