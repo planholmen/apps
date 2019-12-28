@@ -12,7 +12,7 @@
                 Opret nyt bilag
             </div>
 
-            <form action="/expense/store" method="post">
+            <form action="/expense/store" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="text-2xl mt-6 text-left w-10/12 mx-auto">
                     <div class="my-8 py-4">
