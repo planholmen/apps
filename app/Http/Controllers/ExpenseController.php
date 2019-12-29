@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class ExpenseController extends Controller
@@ -42,4 +45,40 @@ class ExpenseController extends Controller
         return redirect('/expense/create');
 
     }
+
+    public static function transfer() {
+
+        $client = GoogleController::getClient();
+        $service = new Google_Service_Drive($client);
+
+        // Get all non-uploaded files
+        $expenses = Expense::where('uploaded', '=', false)->get();
+
+        foreach ($expenses as $expense) {
+
+            $file = $expense->file_path;
+            $path = Storage::path($file);
+
+            $metadata = new Google_Service_Drive_DriveFile(array(
+                'name' => File::name($file),
+                'parents' => [
+                    env('DRIVE_EXPENSE_PARENT')
+                ]
+            ));
+
+            $content = Storage::get($file);
+
+            $service->files->create($metadata, array(
+                'data' => $content,
+                'mimeType' => File::mimeType($path),
+                'uploadType' => 'multipart'
+            ));
+
+            $expense->uploaded = true;
+            $expense->save();
+
+        }
+
+    }
+
 }
