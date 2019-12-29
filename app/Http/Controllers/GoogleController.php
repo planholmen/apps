@@ -21,8 +21,8 @@ class GoogleController extends Controller
         $client->setAccessType('offline');
         $client->setPrompt('select_account consent');
 
-        if ($this->getAccessToken() != false) {
-            $client->setAccessToken($this->getAccessToken());
+        if ($this->getAccessTokenFileContents() != false) {
+            $client->setAccessToken($this->getAccessTokenFileContents());
         } else {
             // No token file exists and a new one will have to be created
             $this->updateAccessTokenWithAuthCode($client);
@@ -38,7 +38,7 @@ class GoogleController extends Controller
 
     }
 
-    private function getAccessToken()
+    private function getAccessTokenFileContents()
     {
         if (Storage::disk('local')->exists('google/token.json')) {
             return json_decode(Storage::get('google/token.json'), true);
