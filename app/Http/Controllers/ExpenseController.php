@@ -48,7 +48,8 @@ class ExpenseController extends Controller
 
     public static function transfer() {
 
-        $client = GoogleController::getClient();
+        $client = new GoogleController();
+        $client = $client->getClient();
         $service = new Google_Service_Drive($client);
 
         // Get all non-uploaded files

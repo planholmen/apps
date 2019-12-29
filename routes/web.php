@@ -16,11 +16,13 @@ Route::get('/login', function() {
 })->name('login');
 
 Route::get('/auth/login', 'LoginController@login');
+Route::get('/driveapi/auth/code', 'GoogleController@saveAuthCode');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
 
     Route::get('/expense/create', 'ExpenseController@create');
+    Route::get('/expense/transfer', 'ExpenseController@transfer');
     Route::post('/expense/store', 'ExpenseController@store');
 });
