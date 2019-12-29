@@ -9,7 +9,7 @@
         <div class="sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
 
             <div>
-                Opret nyt bilag
+                <a href="/">Opret nyt bilag</a>
             </div>
 
             <form action="/expense/store" method="post" enctype="multipart/form-data">

@@ -11,7 +11,7 @@
     <div class="main bg-gray-100 min-h-screen w-full">
 
         <div class="nav sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
-            {{ env('APP_NAME') }}
+            <a href="/">{{ env('APP_NAME') }}</a>
         </div>
 
         @component('components.module')
