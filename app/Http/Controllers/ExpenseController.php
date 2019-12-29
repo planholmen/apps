@@ -58,20 +58,17 @@ class ExpenseController extends Controller
         foreach ($expenses as $expense) {
 
             $file = $expense->file_path;
-            $path = Storage::path($file);
 
             $metadata = new Google_Service_Drive_DriveFile(array(
                 'name' => File::name($file),
-                'parents' => [
-                    env('DRIVE_EXPENSE_PARENT')
-                ]
+                'parents' => explode(",", env('DRIVE_EXPENSE_PARENT'))
             ));
 
             $content = Storage::get($file);
 
             $service->files->create($metadata, array(
                 'data' => $content,
-                'mimeType' => File::mimeType($path),
+                'mimeType' => File::mimeType(Storage::path($file)),
                 'uploadType' => 'multipart'
             ));
 
