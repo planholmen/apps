@@ -12,6 +12,10 @@ class Drive extends Model
         'date'
     ];
 
+    protected $fillable = [
+        'date', 'from', 'to', 'purpose', 'distance', 'user_id'
+    ];
+
     // Get the associated user
     public function user()
     {
