@@ -21,28 +21,34 @@
 
             @else
 
-                <table>
-
-                    <tr>
-                        <th>Dato</th>
-                        <th>Fra</th>
-                        <th>Til</th>
-                        <th>Antal km</th>
-                    </tr>
-
-                    @foreach($drives as $drive)
+                <div class="w-full bg-white mt-8 p-4 rounded-lg">
+                    <table class="w-full text-left text-xl">
 
                         <tr>
-                            <td>{{ $drive->date }}</td>
-                            <td>{{ $drive->from }}</td>
-                            <td>{{ $drive->Til }}</td>
-                            <td>{{ $drive->distance }}</td>
+                            <th>Dato</th>
+                            <th>Fra</th>
+                            <th>Til</th>
+                            <th>Antal km</th>
                         </tr>
 
-                    @endforeach
+                        @foreach($drives as $drive)
 
-                </table>
+                            <tr>
+                                <td>{{ $drive->date->format('d/m/y') }}</td>
+                                <td>{{ $drive->from }}</td>
+                                <td>{{ $drive->to }}</td>
+                                <td>{{ $drive->distance }}</td>
+                            </tr>
 
+                        @endforeach
+
+                    </table>
+
+                </div>
+
+                <div class="p-6 rounded-lg mt-8">
+                    <a href="/drive/post"><button class="block mx-auto px-12 py-4 bg-green-500 text-xl text-white rounded-lg cursor-pointer">Indsend kørebog!</button>
+                </div>
             @endif
 
         </div>

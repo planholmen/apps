@@ -10,7 +10,7 @@ class DriveController extends Controller
 {
     public function index()
     {
-        $drives = Auth::user()->drives();
+        $drives = Auth::user()->drives;
         return view('drive.index', compact('drives'));
     }
 
