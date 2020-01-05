@@ -24,4 +24,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/expense/create', 'ExpenseController@create');
     Route::post('/expense/store', 'ExpenseController@store');
+
+    Route::get('/drive', 'DriveController@index');
+    Route::get('/drive/create', 'DriveController@create');
+    Route::post('/drive/store', 'DriveController@store');
 });
