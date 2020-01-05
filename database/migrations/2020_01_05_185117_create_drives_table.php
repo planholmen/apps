@@ -22,6 +22,7 @@ class CreateDrivesTable extends Migration
             $table->text('purpose');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('expense_id')->nullable();
+            $table->boolean('posted')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

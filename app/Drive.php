@@ -16,6 +16,10 @@ class Drive extends Model
         'date', 'from', 'to', 'purpose', 'distance', 'user_id'
     ];
 
+    protected $casts = [
+        'posted' => 'boolean'
+    ];
+
     // Get the associated user
     public function user()
     {
