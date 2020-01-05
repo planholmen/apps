@@ -21,9 +21,9 @@
         @endcomponent
 
         @component('components.module')
-            @slot('link', '/drive/create')
+            @slot('link', '/drive')
             @slot('icon', 'car')
-            @slot('text', 'Registrer kørsel')
+            @slot('text', 'Se kørsler')
         @endcomponent
 
         @component('components.module')
