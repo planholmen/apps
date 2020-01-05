@@ -38,8 +38,11 @@ class DriveController extends Controller
            'user_id' => Auth::id()
         ]);
 
+    }
 
-
+    public static function unposted()
+    {
+        return Drive::where('posted', false)->get();
     }
 
 }
