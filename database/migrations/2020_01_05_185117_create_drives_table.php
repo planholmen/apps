@@ -15,7 +15,17 @@ class CreateDrivesTable extends Migration
     {
         Schema::create('drives', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->date('date');
+            $table->integer('distance')->comment('Distance in kilometers');
+            $table->text('from');
+            $table->text('to');
+            $table->text('purpose');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('expense_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('expense_id')->references('id')->on('expenses');
         });
     }
 
