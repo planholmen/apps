@@ -23,6 +23,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
 
     Route::get('/expense/create', 'ExpenseController@create');
-    Route::get('/expense/transfer', 'ExpenseController@transfer');
     Route::post('/expense/store', 'ExpenseController@store');
 });
