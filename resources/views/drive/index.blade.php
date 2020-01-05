@@ -47,13 +47,24 @@
                 </div>
 
                 <div class="p-6 rounded-lg mt-8">
-                    <a href="/drive/create"><button class="mx-auto px-12 py-4 bg-orange-500 text-xl text-white rounded-lg cursor-pointer">Registrér kørsel!</button>
-                    <a href="/drive/post"><button class="mx-auto px-12 py-4 bg-green-500 text-xl text-white rounded-lg cursor-pointer">Indsend kørebog!</button>
+                    <a href="/drive/create"><button class="mx-auto px-12 py-4 bg-orange-500 text-xl text-white rounded-lg cursor-pointer">Registrér kørsel!</button></a>
+                    <button onclick="postAlert()" class="mx-auto px-12 py-4 bg-green-500 text-xl text-white rounded-lg cursor-pointer">Indsend kørebog!</button>
                 </div>
             @endif
 
         </div>
 
     </div>
+
+    <script type="text/javascript">
+
+        function postAlert() {
+
+            if (confirm("Er du sikker på, at du vil indsende din kørebog? Dette kan ikke gøres om") === true) {
+                window.location = '/drive/post';
+            }
+        };
+
+    </script>
 
 @endsection
