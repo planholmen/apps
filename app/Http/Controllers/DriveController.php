@@ -44,9 +44,9 @@ class DriveController extends Controller
     /**
      * Method to post an array of drives
      * Input can be either an instance of App\Drive or the id of the drive
-     * @param array $drives
+     * @param $drives
      */
-    private function post(array $drives)
+    private function post($drives)
     {
         foreach ($drives as $drive) {
             if ($drive instanceof Drive) {
@@ -66,6 +66,9 @@ class DriveController extends Controller
         $drives = $user->drives()->where('posted', false)->get();
         $title = str_replace(" ", "_", $user->name) . "_Koerebog_" . date('Y-m-d_H:i:s');
 
+        if ($drives->count() == 0)
+            return;
+
         $service = GoogleSheetsController::getService();
 
         $tempSheet = GoogleSheetsController::createSheet($title);
@@ -77,7 +80,7 @@ class DriveController extends Controller
         GoogleDriveController::deleteFile($tempSheet->spreadsheetId);
 
         $values = [
-            ['', 'DDS Kørebog', '', '', '', ''],
+            ['DDS Kørebog', '', '', '', ''],
             ['', '', '', '', '', ''],
             ['Navn: ', $user->name, '', '', '', ''],
             ['Adresse: ', '', '', '', '', ''],
@@ -121,9 +124,11 @@ class DriveController extends Controller
             array_push($values, $line);
         }
 
-        $service->spreadsheets_values->update($sheet->spreadsheetId, 'A1:Z1000', new \Google_Service_Sheets_ValueRange([
+        $service->spreadsheets_values->update($sheet->id, 'A1:Z1000', new \Google_Service_Sheets_ValueRange([
             'values' => $values
         ]), ['valueInputOption' => 'RAW']);
+
+        $this->post($drives);
 
     }
 
