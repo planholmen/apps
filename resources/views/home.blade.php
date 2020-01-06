@@ -27,6 +27,12 @@
         @endcomponent
 
         @component('components.module')
+            @slot('link', '/user/me')
+            @slot('icon', 'person')
+            @slot('text', 'Opdater oplysninger')
+        @endcomponent
+
+        @component('components.module')
             @slot('link', 'http://mandskab.planholmen.dk')
             @slot('icon', 'people')
             @slot('text', 'Se mandskabsplan')
