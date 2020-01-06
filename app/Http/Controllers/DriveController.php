@@ -12,7 +12,7 @@ class DriveController extends Controller
 {
     public function index()
     {
-        $drives = Auth::user()->drives;
+        $drives = Auth::user()->drives()->where('posted', false);
         return view('drive.index', compact('drives'));
     }
 
@@ -39,6 +39,8 @@ class DriveController extends Controller
            'distance' => round($data['distance'], 0),
            'user_id' => Auth::id()
         ]);
+
+        return redirect()->to('/drive');
 
     }
 
@@ -144,6 +146,8 @@ class DriveController extends Controller
         }
 
         // TODO Add task to jobqueue so the user doesn't have to wait for the Google responses
+
+        return redirect()->to('/drive');
 
     }
 
