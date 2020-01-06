@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Drive;
 use App\Expense;
+use App\Jobs\PostDriveBook;
 use Google_Service_Drive_DriveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,8 +13,10 @@ class DriveController extends Controller
 {
     public function index()
     {
-        $drives = Auth::user()->drives()->where('posted', false);
+        $drives = Auth::user()->drives->where('posted', false);
         return view('drive.index', compact('drives'));
+
+        // TODO Remove or grey-out currently being processed.
     }
 
     public function create()
@@ -49,7 +52,7 @@ class DriveController extends Controller
      * Input can be either an instance of App\Drive or the id of the drive
      * @param $drives
      */
-    private function post($drives)
+    public static function post($drives)
     {
         foreach ($drives as $drive) {
             if ($drive instanceof Drive) {
@@ -66,86 +69,13 @@ class DriveController extends Controller
     {
 
         $user = Auth::user();
-        $drives = $user->drives()->where('posted', false)->get();
-        $title = str_replace(" ", "_", $user->name) . "_Koerebog_" . date('Y-m-d_H:i:s');
+        $drives = $user->drives->where('posted', false);
 
-        if ($drives->count() == 0)
+        if ($drives->count() == 0) {
             return;
-
-        $service = GoogleSheetsController::getService();
-
-        $tempSheet = GoogleSheetsController::createSheet($title);
-        $sheet = GoogleDriveController::copyFile($tempSheet->spreadsheetId, new Google_Service_Drive_DriveFile([
-            'name' => $title,
-            'parents' => explode(",", env("SHEETS_DRIVE_LEDGER_PARENT"))
-        ]));
-
-        GoogleDriveController::deleteFile($tempSheet->spreadsheetId);
-
-        $values = [
-            ['DDS Kørebog', '', '', '', ''],
-            ['', '', '', '', '', ''],
-            ['Navn: ', $user->name, '', '', '', ''],
-            ['Adresse: ', '', '', '', '', ''],
-            ['Registreringsnr.', '', '', '', '', ''],
-            ['Bilagsnr. på afregningsark', '', '', '', '', ''],
-            ['', '', '', '', '', ''],
-            ['Dato', 'Kørslens mål', 'Kørslens formål', 'Antal KM', 'KM-sats', 'I alt']
-        ];
-
-        $sumKm = 0;$sumMoney = 0;
-
-        foreach ($drives as $drive) {
-            $sumKm += $drive->distance;
-            $sumMoney += ((int) $drive->distance * (double) env('KM_SATS'));
-
-            $val = [
-                $drive->date->format('d/m/Y'),
-                $drive->from . " -> " . $drive->to,
-                $drive->purpose,
-                $drive->distance,
-                env('KM_SATS'),
-                ((int) $drive->distance * (double) env('KM_SATS'))
-            ];
-
-            array_push($values, $val);
         }
 
-        $footer = [
-            ['', '', '', '', '', ''],
-            ['I alt', '', '', $sumKm, '', $sumMoney],
-            ['', '', '', '', '', ''],
-            ['', '', '', '', '', ''],
-            ['Underskrift', $user->name, '', '', '', ''],
-            ['', '', '', '', '', ''],
-            ['Attesteret af:', '', '', '', '', ''],
-            ['', '', '', '', '', ''],
-            ['Underskrift', '', '', '', '', '']
-        ];
-
-        foreach ($footer as $line) {
-            array_push($values, $line);
-        }
-
-        $service->spreadsheets_values->update($sheet->id, 'A1:Z1000', new \Google_Service_Sheets_ValueRange([
-            'values' => $values
-        ]), ['valueInputOption' => 'RAW']);
-
-        $this->post($drives);
-
-        $expense = Expense::create([
-            'activity' => 'Team Transport',
-            'amount' => $sumMoney,
-            'creditor' => $user->name,
-            'uploaded' => 1
-        ]);
-
-        foreach ($drives as $drive) {
-            $drive->expense_id = $expense->id;
-            $drive->save();
-        }
-
-        // TODO Add task to jobqueue so the user doesn't have to wait for the Google responses
+        PostDriveBook::dispatch($drives);
 
         return redirect()->to('/drive');
 

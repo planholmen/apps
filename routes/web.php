@@ -32,4 +32,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/user/me', 'UserController@settings');
     Route::post('/user/me/update', 'UserController@update');
+
+    Route::get('/queue/size', function () {
+        dd(\Illuminate\Support\Facades\Queue::size());
+    });
 });
