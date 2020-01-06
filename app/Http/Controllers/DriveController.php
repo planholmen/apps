@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Drive;
+use App\Expense;
 use Google_Service_Drive_DriveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -129,6 +130,20 @@ class DriveController extends Controller
         ]), ['valueInputOption' => 'RAW']);
 
         $this->post($drives);
+
+        $expense = Expense::create([
+            'activity' => 'Team Transport',
+            'amount' => $sumMoney,
+            'creditor' => $user->name,
+            'uploaded' => 1
+        ]);
+
+        foreach ($drives as $drive) {
+            $drive->expense_id = $expense->id;
+            $drive->save();
+        }
+
+        // TODO Add task to jobqueue so the user doesn't have to wait for the Google responses
 
     }
 
