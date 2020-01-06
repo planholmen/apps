@@ -32,4 +32,11 @@ class GoogleSheetsController extends Controller
         return $sheetsService->spreadsheets->create($sheetsRequest);
     }
 
+    public static function getService()
+    {
+        self::setClient();
+
+        return new \Google_Service_Sheets(GoogleSheetsController::$client);
+    }
+
 }
