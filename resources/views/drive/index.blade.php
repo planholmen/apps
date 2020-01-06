@@ -61,7 +61,7 @@
         function postAlert() {
 
             if (confirm("Er du sikker på, at du vil indsende din kørebog? Dette kan ikke gøres om") === true) {
-                window.location = '/drive/post';
+                window.location = '/drive/transfer';
             }
         };
 

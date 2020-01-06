@@ -27,5 +27,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/drive', 'DriveController@index');
     Route::get('/drive/create', 'DriveController@create');
+    Route::get('/drive/transfer', 'DriveController@transfer');
     Route::post('/drive/store', 'DriveController@store');
 });

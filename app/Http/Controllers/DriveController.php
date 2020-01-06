@@ -41,7 +41,25 @@ class DriveController extends Controller
 
     }
 
-    public function post()
+    /**
+     * Method to post an array of drives
+     * Input can be either an instance of App\Drive or the id of the drive
+     * @param array $drives
+     */
+    private function post(array $drives)
+    {
+        foreach ($drives as $drive) {
+            if ($drive instanceof Drive) {
+                $drive->posted = true;
+                $drive->save();
+            } else {
+                $drive = Drive::find($drive);
+                $drive->save();
+            }
+        }
+    }
+
+    public function transfer()
     {
 
         $user = Auth::user();
