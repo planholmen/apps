@@ -17,6 +17,11 @@
                 <div class="text-2xl mt-6 text-left w-10/12 mx-auto bg-white p-4 px-8 rounded-lg">
 
                     <div class="my-8 py-4">
+                        <label for="department">Udvalg</label>
+                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="department">
+                    </div>
+
+                    <div class="my-8 py-4">
                         <label for="activity">Aktivitet</label>
                         <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="activity">
                     </div>

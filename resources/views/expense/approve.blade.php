@@ -48,6 +48,11 @@
                                 </div>
 
                                 <div class="pb-4">
+                                    <strong>Udvalg</strong><br>
+                                    {{ $expenses[0]['department'] }}
+                                </div>
+
+                                <div class="pb-4">
                                     <strong>Aktivitet</strong><br>
                                     {{ $expenses[0]['activity'] }}
                                 </div>

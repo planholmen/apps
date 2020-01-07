@@ -27,6 +27,7 @@ class ExpenseController extends Controller
     {
 
         $data = $request->validate([
+            'department' => 'required|min:2',
             'activity' => 'required|min:2',
             'amount' => 'required|min:0',
             'file' => 'required|file|mimes:jpeg,bmp,png,gif,pdf'
@@ -35,16 +36,17 @@ class ExpenseController extends Controller
         $user = Auth::user();
 
         $expense = Expense::create([
-           'activity' => $data['activity'],
-           'amount' => $data['amount'],
-           'creditor' => $user->name
+            'department' => $data['department'],
+            'activity' => $data['activity'],
+            'amount' => $data['amount'],
+            'creditor' => $user->name
         ]);
 
         $expense->fresh();
 
         $expense->ph_id = str_repeat("0", (3 - strlen((string) $expense->id))) . $expense->id;
 
-        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->ph_id . " - " . $expense->activity . " - " . $expense->creditor . "." . $request->file('file')->extension());
+        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->ph_id . " - " . $expense->department . " " . $expense->activity . " - " . $expense->creditor . "." . $request->file('file')->extension());
         $path = str_replace('public/', '', $path);
 
         $expense->file_path = $path;

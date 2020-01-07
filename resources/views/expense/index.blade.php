@@ -31,7 +31,7 @@
 
                         <td>{{ $expense->ph_id }}</td>
                         <td>{{ $expense->creditor }}</td>
-                        <td>{{ $expense->activity }}</td>
+                        <td>{{ $expense->department }}</td>
                         <td>{{ $expense->activity }}</td>
                         <td class="text-lg">
                             @if ( $expense->approved == 1 )
