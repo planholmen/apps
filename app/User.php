@@ -42,4 +42,14 @@ class User extends Authenticatable
         return $this->hasMany(Drive::class);
     }
 
+    /**
+     * @param $role
+     * @return bool
+     */
+    public function role($role)
+    {
+        $role = (array) $role;
+        return in_array($this->role, $role);
+    }
+
 }

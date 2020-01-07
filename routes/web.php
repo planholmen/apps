@@ -22,9 +22,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
 
-    Route::get('/expense/approve/{id?}', 'ExpenseController@approve');
-    Route::get('/expense/{id}/accept/{next?}', 'ExpenseController@accept');
-    Route::get('/expense/{id}/decline/{next?}', 'ExpenseController@decline');
     Route::get('/expense/create', 'ExpenseController@create');
     Route::post('/expense/store', 'ExpenseController@store');
 
@@ -35,7 +32,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/user/me', 'UserController@settings');
     Route::post('/user/me/update', 'UserController@update');
+});
 
+Route::middleware(['auth', 'can:accessApprovals'])->group(function () {
+    Route::get('/expense/approve/{id?}', 'ExpenseController@approve');
+    Route::get('/expense/{id}/accept/{next?}', 'ExpenseController@accept');
+    Route::get('/expense/{id}/decline/{next?}', 'ExpenseController@decline');
+});
+
+Route::middleware(['auth', 'can:accessAdmin'])->group(function () {
     Route::get('/queue/size', function () {
         dd(\Illuminate\Support\Facades\Queue::size());
     });
