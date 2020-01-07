@@ -58,7 +58,11 @@
                         <div class="w-3/5 bg-gray-200 rounded-lg mx-4 p-4">
 
                             <div class="px-6 overflow-y-auto" style="height: 60vh;">
-                                <img class="max-w-full mx-auto" src="{{ asset('storage/' . $expenses[0]['file_path']) }}" alt="bilag">
+                                @if ( File::mimeType(Storage::path('public/' . $expenses[0]['file_path'])) == 'application/pdf')
+                                    <embed class="w-full h-full" src="{{ asset('storage/' . $expenses[0]['file_path']) }}" type="application/pdf">
+                                @else
+                                    <img class="max-w-full mx-auto" src="{{ asset('storage/' . $expenses[0]['file_path']) }}" alt="bilag">
+                                @endif
                             </div>
 
                         </div>

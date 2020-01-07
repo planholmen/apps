@@ -44,7 +44,7 @@ class ExpenseController extends Controller
 
         $expense->ph_id = str_repeat("0", (3 - strlen((string) $expense->id))) . $expense->id;
 
-        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->ph_id . " - " . $expense->activity . " - " . $expense->creditor);
+        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->ph_id . " - " . $expense->activity . " - " . $expense->creditor . "." . $request->file('file')->extension());
         $path = str_replace('public/', '', $path);
 
         $expense->file_path = $path;
