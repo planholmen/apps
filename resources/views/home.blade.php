@@ -47,7 +47,7 @@
 
         @if ( Gate::inspect('accessApprovals', $user)->allowed() )
 
-        <div class="mt-8 lg:w-1/3 sm:w-5/6 mx-auto text-gray-600">
+        <div class="mt-8 pl-3 lg:w-1/3 sm:w-5/6 mx-auto text-gray-600">
             Økonomi
         </div>
 
