@@ -25,9 +25,6 @@ class CreateDrivesTable extends Migration
             $table->boolean('transferred')->default(false);
             $table->boolean('posted')->default(false);
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('expense_id')->references('id')->on('expenses');
         });
     }
 
