@@ -35,7 +35,8 @@ class ExpenseController extends Controller
 
         $expense->fresh();
 
-        $path = Storage::putFileAs('expenses', $request->file('file'), $expense->id . "." . $request->file('file')->extension());
+        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->id . "." . $request->file('file')->extension());
+        $path = str_replace('public/', '', $path);
 
         $expense->file_path = $path;
 
@@ -45,10 +46,50 @@ class ExpenseController extends Controller
 
     }
 
+    public function approve($id = 0)
+    {
+        $expenses = Expense::where([
+            ['uploaded', '=', 0],
+            ['approved', '=', 0]
+        ])->get()->toArray();
+
+        return view('expense.approve', compact('expenses', 'id'));
+    }
+
+    public function accept($id, $next = false)
+    {
+        $expense = Expense::find($id);
+        $expense->approved = 1;
+        $expense->save();
+
+        if ( $next != false ) {
+            return redirect()->to('/expense/approve' . $next);
+        }
+
+        return redirect()->to('/expense/approve');
+
+    }
+
+    public function decline($id, $next = false)
+    {
+        $expense = Expense::find($id);
+        $expense->approved = -1;
+        $expense->save();
+
+        if ( $next != false ) {
+            return redirect()->to('/expense/approve' . $next);
+        }
+
+        return redirect()->to('/expense/approve');
+    }
+
     public static function transfer() {
 
         // Get all non-uploaded files
-        $expenses = Expense::where('uploaded', '=', false)->get();
+        $expenses = Expense::where([
+            ['uploaded', '=', 0],
+            ['approved', '=', 1]
+        ])->get();
 
         foreach ($expenses as $expense) {
 

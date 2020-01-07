@@ -22,6 +22,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
 
+    Route::get('/expense/approve/{id?}', 'ExpenseController@approve');
+    Route::get('/expense/{id}/accept/{next?}', 'ExpenseController@accept');
+    Route::get('/expense/{id}/decline/{next?}', 'ExpenseController@decline');
     Route::get('/expense/create', 'ExpenseController@create');
     Route::post('/expense/store', 'ExpenseController@store');
 
