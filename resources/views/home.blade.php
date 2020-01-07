@@ -45,6 +45,20 @@
             @slot('text', 'Se mandskabsplan')
         @endcomponent
 
+        @if ( Gate::inspect('accessApprovals', $user)->allowed() )
+
+        <div class="mt-8 lg:w-1/3 sm:w-5/6 mx-auto text-gray-600">
+            Økonomi
+        </div>
+
+        @component('components.module')
+            @slot('link', '/expense/approve')
+            @slot('icon', 'cash')
+            @slot('text', 'Godkend bilag')
+        @endcomponent
+
+        @endif
+
     </div>
 
 @endsection
