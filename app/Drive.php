@@ -17,7 +17,8 @@ class Drive extends Model
     ];
 
     protected $casts = [
-        'posted' => 'boolean'
+        'posted' => 'boolean',
+        'transferred' => 'boolean'
     ];
 
     // Get the associated user

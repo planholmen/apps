@@ -13,11 +13,12 @@ class DriveController extends Controller
 {
     public function index()
     {
-        $drives = Auth::user()->drives->where('posted', false);
+        $drives = Auth::user()->drives()->where([
+            ['posted', '=', 0],
+            ['transferred', '=', 0]
+        ])->get();
         $user = Auth::user();
         return view('drive.index', compact('drives', 'user'));
-
-        // TODO Remove or grey-out currently being processed.
     }
 
     public function create()
@@ -77,6 +78,11 @@ class DriveController extends Controller
         }
 
         PostDriveBook::dispatch($drives);
+
+        foreach ($drives as $drive) {
+            $drive->transferred = true;
+            $drive->save();
+        }
 
         return redirect()->to('/drive');
 
