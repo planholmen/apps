@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             ExpenseController::transfer();
         })->everyFiveMinutes();
+
+        $schedule->command('queue:work --stop-when-empty')->everyMinute();
     }
 
     /**
