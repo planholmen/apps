@@ -18,7 +18,7 @@
 
             <table class="w-full text-left">
                 <tr>
-                    <th>Dato</th>
+                    <th>ID</th>
                     <th>Udlægsholder</th>
                     <th>Udvalg</th>
                     <th>Aktivitet</th>
@@ -29,7 +29,7 @@
 
                     <tr>
 
-                        <td>{{ $expense->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $expense->ph_id }}</td>
                         <td>{{ $expense->creditor }}</td>
                         <td>{{ $expense->activity }}</td>
                         <td>{{ $expense->activity }}</td>
