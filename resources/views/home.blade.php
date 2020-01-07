@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <div class="main bg-gray-100 min-h-screen w-full">
+    <div class="main bg-gray-100 min-h-screen w-full pb-20">
 
         <div class="nav sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
             <a href="/">{{ env('APP_NAME') }}</a>
@@ -55,6 +55,12 @@
             @slot('link', '/expense/approve')
             @slot('icon', 'cash')
             @slot('text', 'Godkend bilag')
+        @endcomponent
+
+        @component('components.module')
+            @slot('link', '/expenses')
+            @slot('icon', 'filing')
+            @slot('text', 'Bilagsoversigt')
         @endcomponent
 
         @endif

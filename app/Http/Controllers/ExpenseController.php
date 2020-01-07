@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ExpenseController extends Controller
 {
+    public function index()
+    {
+        $expenses = Expense::all();
+
+        return view('expense.index', compact('expenses'));
+    }
+
     public function create()
     {
         return view('expense.create');
@@ -79,6 +86,8 @@ class ExpenseController extends Controller
         if ( $next != false ) {
             return redirect()->to('/expense/approve' . $next);
         }
+
+        // TODO Send email to teamster saying their expense godt declined
 
         return redirect()->to('/expense/approve');
     }
