@@ -72,7 +72,7 @@ class ExpenseController extends Controller
         $expense->save();
 
         if ( $next != false ) {
-            return redirect()->to('/expense/approve' . $next);
+            return redirect()->to('/expense/approve/' . $next);
         }
 
         return redirect()->to('/expense/approve');
@@ -86,7 +86,7 @@ class ExpenseController extends Controller
         $expense->save();
 
         if ( $next != false ) {
-            return redirect()->to('/expense/approve' . $next);
+            return redirect()->to('/expense/approve/' . $next);
         }
 
         // TODO Send email to teamster saying their expense godt declined

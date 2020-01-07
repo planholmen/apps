@@ -26,7 +26,7 @@
             @else
 
                 <div class="text-right my-4 mr-4 p-2 px-4 bg-white rounded-lg float-right">
-                    {{ $id }} / {{ sizeof($expenses) }}
+                    1 / {{ sizeof($expenses) }}
                 </div>
 
                 <div class="clearfix"></div>
@@ -39,17 +39,17 @@
                             <div class="p-6">
                                 <div class="pb-4">
                                     <strong>Udlægsholder</strong><br>
-                                    {{ $expenses[$id - 1]['creditor'] }}
+                                    {{ $expenses[0]['creditor'] }}
                                 </div>
 
                                 <div class="pb-4">
                                     <strong>Beløb</strong><br>
-                                    {{ $expenses[$id - 1]['amount'] }} kr.
+                                    {{ $expenses[0]['amount'] }} kr.
                                 </div>
 
                                 <div class="pb-4">
                                     <strong>Aktivitet</strong><br>
-                                    {{ $expenses[$id - 1]['activity'] }}
+                                    {{ $expenses[0]['activity'] }}
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         <div class="w-3/5 bg-gray-200 rounded-lg mx-4 p-4">
 
                             <div class="px-6 overflow-y-auto" style="height: 60vh;">
-                                <img class="max-w-full mx-auto" src="{{ asset('storage/' . $expenses[$id - 1]['file_path']) }}" alt="bilag">
+                                <img class="max-w-full mx-auto" src="{{ asset('storage/' . $expenses[0]['file_path']) }}" alt="bilag">
                             </div>
 
                         </div>
@@ -70,12 +70,12 @@
                         <div class="w-1/2 my-8 mx-auto flex flex-row justify-center">
 
                             <div class="w-1/3 mr-4">
-                                <a href="/expense/{{ $expenses[$id - 1]['id'] }}/decline{{ ($id != sizeof($expenses)) ? ("/" . ($id + 1)) : "" }}">
+                                <a href="/expense/{{ $expenses[0]['id'] }}/decline{{ ($id != sizeof($expenses)) ? ("/" . (1)) : "" }}">
                                     <button class="min-w-full py-4 bg-orange-500 text-white rounded-lg font-bold">Afvis</button>
                                 </a>
                             </div>
                             <div class="w-1/3 ml-4">
-                                <a href="/expense/{{ $expenses[$id - 1]['id'] }}/accept{{ ($id != sizeof($expenses)) ? ("/" . ($id + 1)) : "" }}">
+                                <a href="/expense/{{ $expenses[0]['id'] }}/accept{{ ($id != sizeof($expenses)) ? ("/" . (1)) : "" }}">
                                     <button class="min-w-full py-4 bg-green-500 text-white rounded-lg font-bold">Godkend</button>
                                 </a>
                             </div>
