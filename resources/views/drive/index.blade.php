@@ -7,11 +7,18 @@
 
     <div class="main bg-gray-100 min-h-screen w-full">
 
-        <div class="sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
+        <div class="nav sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
+            <a href="/">Dine kørsler</a>
+        </div>
 
-            <div>
-                <a href="/">Dine kørsler</a>
+        @if ( ($user->address == '' || $user->address == null) || ($user->license_plate == '' || $user->license_plate == null) )
+            <div class="sm:w-full lg:w-3/5 mx-auto text-center bg-red-200 text-red-800 p-6 rounded-lg">
+                Du har endnu ikke sat din adresse og nummerplade. Dette skal gøres før du kan registrere kørsler<br>
+                Du kan tilføje det under "Opdater oplysninger" på forsiden
             </div>
+        @else
+
+            <div class="sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl">
 
             @if( $drives->count() === 0 )
 
@@ -53,6 +60,8 @@
             @endif
 
         </div>
+
+        @endif
 
     </div>
 

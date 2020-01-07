@@ -14,7 +14,8 @@ class DriveController extends Controller
     public function index()
     {
         $drives = Auth::user()->drives->where('posted', false);
-        return view('drive.index', compact('drives'));
+        $user = Auth::user();
+        return view('drive.index', compact('drives', 'user'));
 
         // TODO Remove or grey-out currently being processed.
     }
