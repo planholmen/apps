@@ -20,6 +20,7 @@ class CreateExpensesTable extends Migration
             $table->string('creditor');
             $table->string('file_path')->nullable();
             $table->boolean('uploaded')->default(false);
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }
