@@ -9,7 +9,7 @@
         <div class="sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
 
             <div>
-                <a href="/">Opdater indstillinger</a>
+                <a href="/">Opdater oplysninger</a>
             </div>
 
             <form action="/user/me/update" method="post" enctype="multipart/form-data">
