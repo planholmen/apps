@@ -65,6 +65,19 @@
 
         @endif
 
+        @if ( Gate::inspect('accessAdmin', $user)->allowed() )
+
+        <div class="mt-8 pl-3 lg:w-1/3 sm:w-5/6 mx-auto text-gray-600">
+            Admin
+        </div>
+
+        @component('components.module')
+            @slot('link', '/queue')
+            @slot('icon', 'hammer')
+            @slot('text', 'Pending Jobs')
+        @endcomponent
+
+        @endif
     </div>
 
 @endsection
