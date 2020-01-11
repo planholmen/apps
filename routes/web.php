@@ -42,6 +42,7 @@ Route::middleware(['auth', 'can:accessApprovals'])->group(function () {
 });
 
 Route::middleware(['auth', 'can:accessAdmin'])->group(function () {
+    Route::get('/expense/transfer', 'ExpenseController@transfer');
     Route::get('/queue/size', function () {
         dd(\Illuminate\Support\Facades\Queue::size());
     });

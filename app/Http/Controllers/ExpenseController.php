@@ -44,9 +44,7 @@ class ExpenseController extends Controller
 
         $expense->fresh();
 
-        $expense->ph_id = str_repeat("0", (3 - strlen((string) $expense->id))) . $expense->id;
-
-        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->ph_id . " - " . $expense->department . " " . $expense->activity . " - " . $expense->creditor . "." . $request->file('file')->extension());
+        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->id . " - " . $expense->department . " " . $expense->activity . " - " . $expense->creditor . "." . $request->file('file')->extension());
         $path = str_replace('public/', '', $path);
 
         $expense->file_path = $path;
@@ -71,6 +69,9 @@ class ExpenseController extends Controller
     {
         $expense = Expense::find($id);
         $expense->approved = 1;
+
+        $expense->ph_id = $this->findNextId();
+
         $expense->save();
 
         if ( $next != false ) {
@@ -106,10 +107,11 @@ class ExpenseController extends Controller
 
         foreach ($expenses as $expense) {
 
-            $file = $expense->file_path;
+            $file = 'public/' . $expense->file_path;
+            $name = $expense->ph_id . " - " . $expense->department . " " . $expense->activity . " - " . $expense->creditor . "." . File::extension($file);
 
             $metadata = new Google_Service_Drive_DriveFile(array(
-                'name' => File::name($file),
+                'name' => $name,
                 'parents' => explode(",", env('DRIVE_EXPENSE_PARENT'))
             ));
 
@@ -125,6 +127,25 @@ class ExpenseController extends Controller
             $expense->save();
 
         }
+
+    }
+
+    private function findNextId() {
+
+        $approvedExpenses = Expense::where([
+            ['ph_id', '<>', null]
+        ])->get()->sortByDesc('ph_id');
+
+        $lastId = $approvedExpenses->first()->ph_id;
+        $lastId = (int) ltrim($lastId, '0');
+
+        if ($lastId < 1000) {
+            $nextId = str_repeat('0', 3 - strlen($lastId)) . ($lastId + 1);
+        } else {
+            $nextId = (string) ($lastId + 1);
+        }
+
+        return $nextId;
 
     }
 
