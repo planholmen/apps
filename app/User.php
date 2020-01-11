@@ -49,7 +49,16 @@ class User extends Authenticatable
     public function role($role)
     {
         $role = (array) $role;
-        return in_array($this->role, $role);
+
+        $check = false;
+        $roles = explode(',', $this->role);
+
+        foreach ($roles as $userRole) {
+            if (in_array($userRole, $role))
+                $check = true;
+        }
+
+        return $check;
     }
 
 }
