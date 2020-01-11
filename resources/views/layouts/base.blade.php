@@ -8,7 +8,7 @@
     <body>
         <div class="w-full bg-gray-100 py-2">
             <div class="pl-8">
-                {{ Auth::user()->name }}
+                <a href="/auth/logout">{{ Auth::user()->name }}</a>
             </div>
         </div>
         @yield('content')
