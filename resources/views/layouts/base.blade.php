@@ -6,6 +6,11 @@
         <title>@yield('page_title')</title>
     </head>
     <body>
+        <div class="w-full bg-gray-100 py-2">
+            <div class="pl-8">
+                {{ Auth::user()->name }}
+            </div>
+        </div>
         @yield('content')
     </body>
 </html>
