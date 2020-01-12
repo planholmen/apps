@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/', 'HomeController@index')->name('home');
+
 Route::get('/login', function() {
    return redirect(env('WP_SSO_AUTH_URL') . env('WP_SSO_PUB_KEY') . "&redirect_uri=" . env('WP_SSO_RET_URL'));
 })->name('login');
@@ -19,7 +21,6 @@ Route::get('/auth/login', 'LoginController@login');
 Route::get('/driveapi/auth/code', 'GoogleController@saveAuthCode');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
 
     Route::get('/expense/create', 'ExpenseController@create');

@@ -10,6 +10,20 @@
 
     <div class="main bg-gray-100 min-h-screen w-full pb-20">
 
+        @guest
+
+            <div class="w-full min-h-screen flex items-center justify-center">
+
+                <div>
+                    <a href="/login"><button class="px-20 py-8 rounded-lg text-white bg-pink-400">Login!</button></a>
+                </div>
+
+            </div>
+
+        @endguest
+
+        @auth
+
         <div class="nav sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
             <a href="/">{{ env('APP_NAME') }}</a>
         </div>
@@ -78,6 +92,9 @@
         @endcomponent
 
         @endif
+
+        @endauth
+
     </div>
 
 @endsection
