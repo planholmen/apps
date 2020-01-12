@@ -36,4 +36,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function drives()
+    {
+        return $this->hasMany(Drive::class);
+    }
+
+    /**
+     * @param $role
+     * @return bool
+     */
+    public function role($role)
+    {
+        $role = (array) $role;
+
+        $check = false;
+        $roles = explode(',', $this->role);
+
+        foreach ($roles as $userRole) {
+            if (in_array($userRole, $role))
+                $check = true;
+        }
+
+        return $check;
+    }
+
 }
