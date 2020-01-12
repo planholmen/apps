@@ -18,7 +18,6 @@ Route::get('/login', function() {
 })->name('login');
 
 Route::get('/auth/login', 'LoginController@login');
-Route::get('/driveapi/auth/code', 'GoogleController@saveAuthCode');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
@@ -44,6 +43,9 @@ Route::middleware(['auth', 'can:accessApprovals'])->group(function () {
 
 Route::middleware(['auth', 'can:accessAdmin'])->group(function () {
     Route::get('/expense/transfer', 'ExpenseController@transfer');
+
+    Route::get('/driveapi/auth', 'GoogleController@updateAccessTokenWithAuthCode');
+    Route::get('/driveapi/auth/code', 'GoogleController@saveAuthCode');
 
     Route::get('/queue', 'JobsController@index');
     Route::get('/queue/size', function () {
