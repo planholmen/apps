@@ -58,7 +58,7 @@ class GoogleController extends Controller
         }
     }
 
-    private function updateAccessTokenWithAuthCode(Google_Client &$client)
+    public function updateAccessTokenWithAuthCode(Google_Client &$client)
     {
 
         $scopes = [
