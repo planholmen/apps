@@ -124,16 +124,20 @@ class ExpenseController extends Controller
             ['ph_id', '<>', null]
         ])->get()->sortByDesc('ph_id');
 
-        $lastId = $approvedExpenses->first()->ph_id;
-        $lastId = (int) ltrim($lastId, '0');
+        try {
+            $lastId = $approvedExpenses->first()->ph_id;
+            $lastId = (int) ltrim($lastId, '0');
 
-        if ($lastId < 1000) {
-            $nextId = str_repeat('0', 3 - strlen($lastId)) . ($lastId + 1);
-        } else {
-            $nextId = (string) ($lastId + 1);
+            if ($lastId < 1000) {
+                $nextId = str_repeat('0', 3 - strlen($lastId)) . ($lastId + 1);
+            } else {
+                $nextId = (string) ($lastId + 1);
+            }
+
+            return $nextId;
+        } catch (\ErrorException $exception) {
+            return "001";
         }
-
-        return $nextId;
 
     }
 
