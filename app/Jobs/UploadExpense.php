@@ -4,8 +4,10 @@ namespace App\Jobs;
 
 use App\Expense;
 use App\Http\Controllers\GoogleDriveController;
+use App\Mail\FailedExpenseUploadJob;
+use App\User;
 use Google_Service_Drive_DriveFile;
-use http\Exception;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class UploadExpense implements ShouldQueue
@@ -66,7 +69,10 @@ class UploadExpense implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
-        // TODO send email to admins with the error message
-
+        foreach (User::all() as $user) {
+            if ($user->isAdmin()) {
+                Mail::to($user->email)->send(new FailedExpenseUploadJob($this->expense, $exception));
+            }
+        }
     }
 }
