@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('page_title', 'See pending jobs')
+@section('page_title', 'Opgaveliste')
 
 @section('content')
 
@@ -8,7 +8,7 @@
 
         <div class="sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
             <div>
-                <a href="/">See pending jobs</a>
+                <a href="/">Opgaveliste</a>
             </div>
 
         </div>

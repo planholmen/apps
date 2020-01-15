@@ -3,7 +3,7 @@
     <head>
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         @yield('headers')
-        <title>@yield('page_title')</title>
+        <title>@yield('page_title') :: {{ env('APP_NAME') }}</title>
     </head>
     <body>
         @auth

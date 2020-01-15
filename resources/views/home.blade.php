@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('page_title', 'PLan Holmen Apps')
+@section('page_title', 'Dashboard')
 
 @section('headers')
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
@@ -88,7 +88,7 @@
         @component('components.module')
             @slot('link', '/queue')
             @slot('icon', 'hammer')
-            @slot('text', 'Pending Jobs')
+            @slot('text', 'Opgaveliste')
         @endcomponent
 
         @endif
