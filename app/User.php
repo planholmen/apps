@@ -46,7 +46,7 @@ class User extends Authenticatable
      * @param $role
      * @return bool
      */
-    public function role($role)
+    public function hasRole($role)
     {
         $role = (array) $role;
 
@@ -59,6 +59,11 @@ class User extends Authenticatable
         }
 
         return $check;
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
     }
 
 }

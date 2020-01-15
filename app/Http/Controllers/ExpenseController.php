@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\Jobs\UploadExpense;
 use Google_Service_Drive_DriveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,9 +75,13 @@ class ExpenseController extends Controller
 
         $expense->save();
 
+        UploadExpense::dispatch($expense);
+
         if ( $next != false ) {
             return redirect()->to('/expense/approve/' . $next);
         }
+
+        // TODO Send email to teamster saying their expense got approved. Probably with collecting multiple emails at once
 
         return redirect()->to('/expense/approve');
 
@@ -92,7 +97,7 @@ class ExpenseController extends Controller
             return redirect()->to('/expense/approve/' . $next);
         }
 
-        // TODO Send email to teamster saying their expense godt declined
+        // TODO Send email to teamster saying their expense got declined
 
         return redirect()->to('/expense/approve');
     }
@@ -107,24 +112,7 @@ class ExpenseController extends Controller
 
         foreach ($expenses as $expense) {
 
-            $file = 'public/' . $expense->file_path;
-            $name = $expense->ph_id . " - " . $expense->department . " " . $expense->activity . " - " . $expense->creditor . "." . File::extension($file);
-
-            $metadata = new Google_Service_Drive_DriveFile(array(
-                'name' => $name,
-                'parents' => explode(",", env('DRIVE_EXPENSE_PARENT'))
-            ));
-
-            $content = Storage::get($file);
-
-            GoogleDriveController::createFile($metadata, array(
-                'data' => $content,
-                'mimeType' => File::mimeType(Storage::path($file)),
-                'uploadType' => 'multipart'
-            ));
-
-            $expense->uploaded = true;
-            $expense->save();
+            UploadExpense::dispatch($expense);
 
         }
 

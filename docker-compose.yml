@@ -9,8 +9,6 @@ services:
       - 80:80
     volumes:
       - ./:/var/www/
-    env_file:
-      - ./.env
     environment:
       XDEBUG_CONFIG: "remote_host=host.docker.internal"
     external_links:
