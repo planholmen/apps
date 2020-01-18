@@ -91,6 +91,12 @@
             @slot('text', 'Opgaveliste')
         @endcomponent
 
+        @component('components.module')
+            @slot('link', '/driveapi/auth')
+            @slot('icon', 'logo-google')
+            @slot('text', 'Google Auth')
+        @endcomponent
+
         @endif
 
         @endauth
