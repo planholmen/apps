@@ -11,15 +11,24 @@ use Illuminate\Support\Facades\Storage;
 class GoogleController extends Controller
 {
 
-    public function getClient()
+    private function createClient()
     {
-
         $client = new Google_Client();
         $client->setApplicationName('Google Drive API Test');
         $client->setScopes(Google_Service_Drive::DRIVE_METADATA_READONLY);
+
+        // This will need to be manually uploaded to the server for now
         $client->setAuthConfig(Storage::path('google/credentials.json'));
         $client->setAccessType('offline');
         $client->setPrompt('select_account consent');
+
+        return $client;
+    }
+
+    public function getClient()
+    {
+
+        $client = $this->createClient();
 
         if ($this->getAccessTokenFileContents() != false) {
             $client->setAccessToken($this->getAccessTokenFileContents());
@@ -61,11 +70,7 @@ class GoogleController extends Controller
     public function updateAccessTokenWithAuthCode(Google_Client &$client)
     {
 
-        $scopes = [
-            'https://www.googleapis.com/auth/drive.file'
-        ];
-
-        $authCode = $this->getAuthCode($client, $scopes);
+        $authCode = $this->getAuthCode();
 
         $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
 
@@ -79,27 +84,35 @@ class GoogleController extends Controller
 
     }
 
-    private function getAuthCode(Google_Client &$client, array $scopes)
+    private function getAuthCode()
     {
 
         if (Storage::disk('local')->exists('google/auth_code.txt')) {
 
             return Storage::get('google/auth_code.txt');
 
-        } else {
-
-            $authUrl = $client->createAuthUrl($scopes);
-            header("Location: " . $authUrl);
-            exit();
-
         }
 
     }
 
+    private function getAuthUrl(Google_Client $client, $scope = [])
+    {
+        return $client->createAuthUrl($scope);
+    }
+
+    public function update()
+    {
+        $url = $this->getAuthUrl($this->createClient(), ['https://www.googleapis.com/auth/drive.file']);
+
+        return view('google.auth', compact('url'));
+    }
+
     public function saveAuthCode(Request $request)
     {
-        if ($request->code)
-            Storage::put('google/auth_code.txt', $request->code);
+        if ($request->auth_code)
+            Storage::put('google/auth_code.txt', $request->auth_code);
+
+        return redirect()->to('/');
     }
 
 }
