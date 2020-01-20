@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Expense extends Model
 {
     protected $fillable = ['department', 'activity', 'amount', 'creditor', 'uploaded'];
+
+    protected $dates = ['approved_at'];
 }

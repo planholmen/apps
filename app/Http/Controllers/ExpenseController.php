@@ -72,6 +72,7 @@ class ExpenseController extends Controller
         $expense->approved = 1;
 
         $expense->ph_id = $this->findNextId();
+        $expense->approved_at = now();
 
         $expense->save();
 

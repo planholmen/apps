@@ -23,6 +23,7 @@ class CreateExpensesTable extends Migration
             $table->string('file_path')->nullable();
             $table->boolean('uploaded')->default(false);
             $table->integer('approved')->default(0);
+            $table->timestamp('approved_at')->nullable();
             $table->timestamps();
         });
     }
