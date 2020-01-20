@@ -83,8 +83,6 @@ class ExpenseController extends Controller
             return redirect()->to('/expense/approve/' . $next);
         }
 
-        // TODO Send email to teamster saying their expense got approved. Probably with collecting multiple emails at once
-
         return redirect()->to('/expense/approve');
 
     }
