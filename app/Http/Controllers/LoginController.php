@@ -103,7 +103,7 @@ class LoginController extends Controller
             curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($curl, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 GTB5');
-            curl_setopt($curl, CURLOPT_REFERER, 'http://www.example.com/1');
+            curl_setopt($curl, CURLOPT_REFERER, env('WP_SSO_RET_URL'));
 
             $curl_response = curl_exec($curl);
             curl_close($curl);
