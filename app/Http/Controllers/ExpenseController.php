@@ -37,6 +37,7 @@ class ExpenseController extends Controller
         $user = Auth::user();
 
         $expense = Expense::create([
+            'user_id' => $user->id,
             'department' => $data['department'],
             'activity' => $data['activity'],
             'amount' => $data['amount'],
