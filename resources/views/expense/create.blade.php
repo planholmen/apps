@@ -18,21 +18,33 @@
 
                     <div class="my-8 py-4">
                         <label for="department">Udvalg</label>
-                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="department">
+                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="department" required>
+                        @error('department')
+                            <div class="text-red-600 text-lg">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="my-8 py-4">
                         <label for="activity">Aktivitet</label>
-                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="activity">
+                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="activity" required>
+                        @error('activity')
+                            <div class="text-red-600 text-lg">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="my-8 py-4">
                         <label for="amount">Beløb</label>
-                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="number" step="any" name="amount">
+                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="number" min="0" step="any" name="amount" required>
+                        @error('amount')
+                            <div class="text-red-600 text-lg">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="my-8 py-4">
-                        <input class="block mx-auto border-solid border-gray-400 border-2 rounded-lg" type="file" name="file">
+                        <input class="block mx-auto border-solid border-gray-400 border-2 rounded-lg" type="file" name="file" required>
+                        @error('file')
+                            <div class="text-red-600 text-lg">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="my-8 py-4">

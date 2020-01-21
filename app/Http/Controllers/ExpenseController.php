@@ -32,9 +32,9 @@ class ExpenseController extends Controller
         $data = $request->validate([
             'department' => 'required|min:2',
             'activity' => 'required|min:2',
-            'amount' => 'required|min:0',
+            'amount' => 'required|gt:0',
             'file' => 'required|file|mimes:jpeg,bmp,png,gif,pdf'
-        ]);
+        ])->withError();
 
         $user = Auth::user();
 
