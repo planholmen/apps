@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Expense;
 use App\Jobs\UploadExpense;
+use App\Mail\DeclineExpense;
 use Google_Service_Drive_DriveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class ExpenseController extends Controller
@@ -97,7 +99,7 @@ class ExpenseController extends Controller
             return redirect()->to('/expense/approve/' . $next);
         }
 
-        // TODO Send email to teamster saying their expense got declined
+        Mail::to($expense->user->email)->send(new DeclineExpense($expense));
 
         return redirect()->to('/expense/approve');
     }
