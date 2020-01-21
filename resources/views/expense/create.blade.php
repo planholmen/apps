@@ -43,7 +43,7 @@
                     <div class="my-8 py-4">
                         <input class="block mx-auto border-solid border-gray-400 border-2 rounded-lg" type="file" name="file" required>
                         @error('file')
-                            <div class="text-red-600 text-lg">{{ $message }}</div>
+                            <div class="text-red-600 text-center text-lg">{{ $message }}</div>
                         @enderror
                     </div>
 
