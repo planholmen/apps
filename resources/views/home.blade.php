@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('page_title', 'PLan Holmen Apps')
+@section('page_title', 'Dashboard')
 
 @section('headers')
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
@@ -9,6 +9,20 @@
 @section('content')
 
     <div class="main bg-gray-100 min-h-screen w-full pb-20">
+
+        @guest
+
+            <div class="w-full min-h-screen flex items-center justify-center">
+
+                <div>
+                    <a href="/login"><button class="px-20 py-8 rounded-lg text-white bg-pink-400">Login!</button></a>
+                </div>
+
+            </div>
+
+        @endguest
+
+        @auth
 
         <div class="nav sm:w-full lg:w-1/2 mx-auto text-center sm:text-6xl lg:text-4xl py-12">
             <a href="/">{{ env('APP_NAME') }}</a>
@@ -74,10 +88,19 @@
         @component('components.module')
             @slot('link', '/queue')
             @slot('icon', 'hammer')
-            @slot('text', 'Pending Jobs')
+            @slot('text', 'Opgaveliste')
+        @endcomponent
+
+        @component('components.module')
+            @slot('link', '/driveapi/auth')
+            @slot('icon', 'logo-google')
+            @slot('text', 'Google Auth')
         @endcomponent
 
         @endif
+
+        @endauth
+
     </div>
 
 @endsection

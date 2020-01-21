@@ -11,15 +11,15 @@
 |
 */
 
+Route::get('/', 'HomeController@index')->name('home');
+
 Route::get('/login', function() {
    return redirect(env('WP_SSO_AUTH_URL') . env('WP_SSO_PUB_KEY') . "&redirect_uri=" . env('WP_SSO_RET_URL'));
 })->name('login');
 
 Route::get('/auth/login', 'LoginController@login');
-Route::get('/driveapi/auth/code', 'GoogleController@saveAuthCode');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
 
     Route::get('/expense/create', 'ExpenseController@create');
@@ -43,6 +43,9 @@ Route::middleware(['auth', 'can:accessApprovals'])->group(function () {
 
 Route::middleware(['auth', 'can:accessAdmin'])->group(function () {
     Route::get('/expense/transfer', 'ExpenseController@transfer');
+
+    Route::get('/driveapi/auth', 'GoogleController@update');
+    Route::post('/driveapi/auth/code', 'GoogleController@saveAuthCode');
 
     Route::get('/queue', 'JobsController@index');
     Route::get('/queue/size', function () {

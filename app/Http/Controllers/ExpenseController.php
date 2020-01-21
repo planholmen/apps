@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\Jobs\UploadExpense;
+use App\Mail\DeclineExpense;
 use Google_Service_Drive_DriveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class ExpenseController extends Controller
@@ -29,13 +32,14 @@ class ExpenseController extends Controller
         $data = $request->validate([
             'department' => 'required|min:2',
             'activity' => 'required|min:2',
-            'amount' => 'required|min:0',
+            'amount' => 'required|numeric|gt:0',
             'file' => 'required|file|mimes:jpeg,bmp,png,gif,pdf'
         ]);
 
         $user = Auth::user();
 
         $expense = Expense::create([
+            'user_id' => $user->id,
             'department' => $data['department'],
             'activity' => $data['activity'],
             'amount' => $data['amount'],
@@ -71,8 +75,11 @@ class ExpenseController extends Controller
         $expense->approved = 1;
 
         $expense->ph_id = $this->findNextId();
+        $expense->approved_at = now();
 
         $expense->save();
+
+        UploadExpense::dispatch($expense);
 
         if ( $next != false ) {
             return redirect()->to('/expense/approve/' . $next);
@@ -92,7 +99,7 @@ class ExpenseController extends Controller
             return redirect()->to('/expense/approve/' . $next);
         }
 
-        // TODO Send email to teamster saying their expense godt declined
+        Mail::to($expense->user->email)->send(new DeclineExpense($expense));
 
         return redirect()->to('/expense/approve');
     }
@@ -107,24 +114,7 @@ class ExpenseController extends Controller
 
         foreach ($expenses as $expense) {
 
-            $file = 'public/' . $expense->file_path;
-            $name = $expense->ph_id . " - " . $expense->department . " " . $expense->activity . " - " . $expense->creditor . "." . File::extension($file);
-
-            $metadata = new Google_Service_Drive_DriveFile(array(
-                'name' => $name,
-                'parents' => explode(",", env('DRIVE_EXPENSE_PARENT'))
-            ));
-
-            $content = Storage::get($file);
-
-            GoogleDriveController::createFile($metadata, array(
-                'data' => $content,
-                'mimeType' => File::mimeType(Storage::path($file)),
-                'uploadType' => 'multipart'
-            ));
-
-            $expense->uploaded = true;
-            $expense->save();
+            UploadExpense::dispatch($expense);
 
         }
 
@@ -136,16 +126,20 @@ class ExpenseController extends Controller
             ['ph_id', '<>', null]
         ])->get()->sortByDesc('ph_id');
 
-        $lastId = $approvedExpenses->first()->ph_id;
-        $lastId = (int) ltrim($lastId, '0');
+        try {
+            $lastId = $approvedExpenses->first()->ph_id;
+            $lastId = (int) ltrim($lastId, '0');
 
-        if ($lastId < 1000) {
-            $nextId = str_repeat('0', 3 - strlen($lastId)) . ($lastId + 1);
-        } else {
-            $nextId = (string) ($lastId + 1);
+            if ($lastId < 1000) {
+                $nextId = str_repeat('0', 3 - strlen($lastId)) . ($lastId + 1);
+            } else {
+                $nextId = (string) ($lastId + 1);
+            }
+
+            return $nextId;
+        } catch (\ErrorException $exception) {
+            return "001";
         }
-
-        return $nextId;
 
     }
 

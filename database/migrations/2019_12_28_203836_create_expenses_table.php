@@ -16,6 +16,7 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('ph_id')->nullable();
+            $table->bigInteger('user_id');
             $table->string('department');
             $table->string('activity');
             $table->double('amount');
@@ -23,6 +24,7 @@ class CreateExpensesTable extends Migration
             $table->string('file_path')->nullable();
             $table->boolean('uploaded')->default(false);
             $table->integer('approved')->default(0);
+            $table->timestamp('approved_at')->nullable();
             $table->timestamps();
         });
     }

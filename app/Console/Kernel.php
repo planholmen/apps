@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\MailController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,10 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            ExpenseController::transfer();
-        })->everyFiveMinutes();
-
+        $schedule->command(MailController::emailApprovedExpenses())->dailyAt('12:00');
         $schedule->command('queue:work --stop-when-empty')->everyMinute();
     }
 

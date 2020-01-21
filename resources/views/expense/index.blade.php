@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('page_title', 'Godkend bilag')
+@section('page_title', 'Bilagsoversigt')
 
 @section('headers')
     <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>

@@ -28,12 +28,12 @@ class AuthServiceProvider extends ServiceProvider
 
         // the gate checks if the user is an admin
         Gate::define('accessAdmin', function($user) {
-            return $user->role('admin');
+            return $user->hasRole('admin');
         });
 
         // the gate checks if the user is a member
         Gate::define('accessApprovals', function($user) {
-            return $user->role('approver');
+            return $user->hasRole('approver');
         });
     }
 }
