@@ -36,6 +36,7 @@ class ApprovedExpenses extends Mailable
         $user = $this->user;
 
         return $this->from('it@planholmen.dk')
+                    ->replyTo('penge@planholmen.dk', 'PLan Holmen Kasseren')
                     ->subject('Du har fået godkendt bilag!')
                     ->markdown('mails.expense.approved', compact('expenses', 'user'));
     }

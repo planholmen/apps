@@ -33,6 +33,7 @@ class DeclineExpense extends Mailable
         $expense = $this->expense;
 
         return $this->from('it@planholmen.dk')
+                    ->replyTo('penge@planholmen.dk', 'PLan Holmen Kasseren')
                     ->subject('Et af dine bilag er blevet afvist')
                     ->markdown('mails.expense.declined', compact('expense'));
     }
