@@ -34,7 +34,7 @@ class ExpenseController extends Controller
             'activity' => 'required|min:2',
             'amount' => 'required|numeric|gt:0',
             'file' => 'required|file|mimes:jpeg,bmp,png,gif,pdf'
-        ])->withError();
+        ]);
 
         $user = Auth::user();
 
