@@ -13,16 +13,16 @@ return [
     |
     */
 
-    'file' => ':attribute skal være en fil.',
+    'file' => ':Attribute skal være en fil.',
     'gt' => [
-        'numeric' => ':attribute skal være større end :value.',
+        'numeric' => ':Attribute skal være større end :value.',
     ],
-    'mimes' => ':attribute skal være en fil af en af typerne: :values.',
+    'mimes' => ':Attribute skal være en fil af en af typerne: :values.',
     'min' => [
-        'string' => ':attribute skal have en længde på mindst :min bogstaver.',
+        'string' => ':Attribute skal have en længde på mindst :min bogstaver.',
     ],
-    'numeric' => ':attribute skal være et tal.',
-    'required' => ':attribute er påkrævet.',
+    'numeric' => ':Attribute skal være et tal.',
+    'required' => ':Attribute er påkrævet.',
 
     /*
     |--------------------------------------------------------------------------
@@ -48,6 +48,11 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'department' => 'udvalg',
+        'activity' => 'aktivitet',
+        'amount' => 'beløb',
+        'file' => 'fil',
+    ],
 
 ];
