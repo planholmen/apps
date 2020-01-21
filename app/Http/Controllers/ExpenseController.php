@@ -32,7 +32,7 @@ class ExpenseController extends Controller
         $data = $request->validate([
             'department' => 'required|min:2',
             'activity' => 'required|min:2',
-            'amount' => 'required|gt:0',
+            'amount' => 'required|numeric|gt:0',
             'file' => 'required|file|mimes:jpeg,bmp,png,gif,pdf'
         ])->withError();
 
