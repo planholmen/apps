@@ -15,6 +15,11 @@ class Expense extends Model
         return number_format((double)$amount, 2, ',', '.');
     }
 
+    public function setAmountAttribute($amount)
+    {
+        $this->attributes['amount'] = round($amount, 2);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
