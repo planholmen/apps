@@ -10,6 +10,11 @@ class Expense extends Model
 
     protected $dates = ['approved_at'];
 
+    public function getAmountAttribute($amount)
+    {
+        return $this->attributes['amount'] = number_format($amount, 2, ',', '.');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
