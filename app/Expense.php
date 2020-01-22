@@ -12,7 +12,7 @@ class Expense extends Model
 
     public function getAmountAttribute($amount)
     {
-        return $this->attributes['amount'] = number_format($amount, 2, ',', '.');
+        return number_format((double)$amount, 2, ',', '.');
     }
 
     public function user()
