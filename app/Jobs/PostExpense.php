@@ -57,15 +57,17 @@ class PostExpense implements ShouldQueue
                 ]
             ]
         ]);
-/*
+
         $data[] = new Google_Service_Sheets_ValueRange([
-            'range' => '',
+            'range' => "'Bogføring'!H" . $row . ":I" . $row,
             'values' => [
-                $this->expense->creditor,
-                'Nej'
+                [
+                    $this->expense->creditor,
+                    'Nej'
+                ]
             ]
         ]);
-*/
+
         $body = new Google_Service_Sheets_BatchUpdateValuesRequest([
             'valueInputOption' => 'USER_ENTERED',
             'data' => $data
