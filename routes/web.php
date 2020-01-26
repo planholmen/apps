@@ -11,10 +11,12 @@
 |
 */
 
+use App\CustomOption;
+
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/login', function() {
-   return redirect(env('WP_SSO_AUTH_URL') . env('WP_SSO_PUB_KEY') . "&redirect_uri=" . env('WP_SSO_RET_URL'));
+   return redirect(CustomOption::get('WP_SSO_AUTH_URL') . CustomOption::get('WP_SSO_PUB_KEY') . "&redirect_uri=" . CustomOption::get('WP_SSO_RET_URL'));
 })->name('login');
 
 Route::get('/auth/login', 'LoginController@login');
