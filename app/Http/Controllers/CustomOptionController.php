@@ -31,6 +31,8 @@ class CustomOptionController extends Controller
             'value' => $data['value']
         ]);
 
+        return redirect()->to('/options/create');
+
     }
 
 }
