@@ -8,6 +8,7 @@ class CustomOption extends Model
 {
 
     public $primaryKey = 'key';
+    public $keyType = 'string';
 
     protected $fillable = [
         'key', 'value'
