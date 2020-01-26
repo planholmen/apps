@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\CustomOption;
 use App\Expense;
 use App\Http\Controllers\DriveController;
 use App\Http\Controllers\GoogleDriveController;
@@ -46,7 +47,7 @@ class PostDriveBook implements ShouldQueue
         $tempSheet = GoogleSheetsController::createSheet($title);
         $sheet = GoogleDriveController::copyFile($tempSheet->spreadsheetId, new Google_Service_Drive_DriveFile([
             'name' => $title,
-            'parents' => explode(",", env("SHEETS_DRIVE_LEDGER_PARENT"))
+            'parents' => explode(",", CustomOption::get("SHEETS_DRIVE_LEDGER_PARENT"))
         ]));
 
         GoogleDriveController::deleteFile($tempSheet->spreadsheetId);
@@ -63,18 +64,19 @@ class PostDriveBook implements ShouldQueue
         ];
 
         $sumKm = 0;$sumMoney = 0;
+        $kmSats = CustomOption::get('KM_SATS');
 
         foreach ($this->drives as $drive) {
             $sumKm += $drive->distance;
-            $sumMoney += ((int) $drive->distance * (double) env('KM_SATS'));
+            $sumMoney += ((int) $drive->distance * (double) $kmSats);
 
             $val = [
                 $drive->date->format('d/m/Y'),
                 $drive->from . " -> " . $drive->to,
                 $drive->purpose,
                 $drive->distance,
-                env('KM_SATS'),
-                ((int) $drive->distance * (double) env('KM_SATS'))
+                $kmSats,
+                ((int) $drive->distance * (double) $kmSats)
             ];
 
             array_push($values, $val);
