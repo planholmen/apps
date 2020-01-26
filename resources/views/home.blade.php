@@ -92,9 +92,9 @@
         @endcomponent
 
         @component('components.module')
-            @slot('link', '/driveapi/auth')
-            @slot('icon', 'logo-google')
-            @slot('text', 'Google Auth')
+            @slot('link', '/settings')
+            @slot('icon', 'settings')
+            @slot('text', 'Indstillinger')
         @endcomponent
 
         @endif

@@ -49,9 +49,14 @@ Route::middleware(['auth', 'can:accessAdmin'])->group(function () {
     Route::get('/driveapi/auth', 'GoogleController@update');
     Route::post('/driveapi/auth/code', 'GoogleController@saveAuthCode');
 
-    Route::get('/options', 'CustomOptionController@index');
-    Route::get('/options/create', 'CustomOptionController@create');
-    Route::post('/options/store', 'CustomOptionController@store');
+    Route::prefix('settings')->group(function () {
+        Route::get('', 'HomeController@settings');
+
+        Route::get('options', 'CustomOptionController@index');
+        Route::get('options/create', 'CustomOptionController@create');
+        Route::post('options/store', 'CustomOptionController@store');
+    });
+
 
     Route::get('/queue', 'JobsController@index');
     Route::get('/queue/size', function () {

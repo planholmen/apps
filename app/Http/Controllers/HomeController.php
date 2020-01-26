@@ -26,4 +26,15 @@ class HomeController extends Controller
         $user = \Auth::user();
         return view('home', compact('user'));
     }
+
+    /**
+     * Show the settings dashboard for admins
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function settings()
+    {
+        $user = \Auth::user();
+        return view('settings', compact('user'));
+    }
 }
