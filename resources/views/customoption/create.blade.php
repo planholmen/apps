@@ -12,7 +12,7 @@
 
         <div class="w-1/2 mx-auto bg-white py-8 rounded-lg">
 
-            <form action="/options/store" method="post" class="w-full px-4 text-lg">
+            <form action="store" method="post" class="w-full px-4 text-lg">
 
                 @csrf
 
