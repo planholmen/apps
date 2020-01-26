@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Expense;
+use App\Jobs\PostExpense;
 use App\Jobs\UploadExpense;
 use App\Mail\DeclineExpense;
 use Google_Service_Drive_DriveFile;
@@ -80,6 +81,7 @@ class ExpenseController extends Controller
         $expense->save();
 
         UploadExpense::dispatch($expense);
+        PostExpense::dispatch($expense);
 
         if ( $next != false ) {
             return redirect()->to('/expense/approve/' . $next);
