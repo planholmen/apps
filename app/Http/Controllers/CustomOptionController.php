@@ -15,7 +15,7 @@ class CustomOptionController extends Controller
 
     public function create()
     {
-
+        return view('customoption.create');
     }
 
     public function store(Request $request)
