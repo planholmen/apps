@@ -20,13 +20,13 @@ class CustomOption extends Model
      *
      * @param string $key
      * @return mixed
+     * @throws \Exception
      */
     public static function get(string $key)
     {
         if (CustomOption::find($key) != null)
             return CustomOption::find($key)->value;
 
-
-        return false;
+        throw new \Exception("The requested custom option " . $key . " does not exist.");
     }
 }
