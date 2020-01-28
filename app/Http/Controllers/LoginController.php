@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomOption;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,18 +86,18 @@ class LoginController extends Controller
 
         } else {
 
-            $client_id = env('WP_SSO_PUB_KEY');
-            $client_secret = env('WP_SSO_PRIV_KEY');
+            $client_id = CustomOption::get('WP_SSO_PUB_KEY');
+            $client_secret = CustomOption::get('WP_SSO_PRIV_KEY');
 
             $curl_post_data = array(
                 'grant_type' => 'authorization_code',
                 'code' => $code,
-                'redirect_uri' => env('WP_SSO_RET_URL'),
+                'redirect_uri' => CustomOption::get('WP_SSO_RET_URL'),
                 'client_id' => $client_id,
                 'client_secret' => $client_secret
             );
 
-            $curl = curl_init(env('WP_SSO_URL') . '?oauth=token');
+            $curl = curl_init(CustomOption::get('WP_SSO_URL') . '?oauth=token');
 
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
@@ -120,7 +121,7 @@ class LoginController extends Controller
     public function getWPUser(String $token)
     {
 
-        $service_url = env('WP_SSO_URL') . '?oauth=me&access_token=' . $token;
+        $service_url = CustomOption::get('WP_SSO_URL') . '?oauth=me&access_token=' . $token;
         $curl = curl_init($service_url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, false);
