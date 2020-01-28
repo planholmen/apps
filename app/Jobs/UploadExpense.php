@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\CustomOption;
 use App\Expense;
 use App\Http\Controllers\GoogleDriveController;
 use App\Mail\FailedExpenseUploadJob;
@@ -47,7 +48,7 @@ class UploadExpense implements ShouldQueue
 
         $metadata = new Google_Service_Drive_DriveFile(array(
             'name' => $name,
-            'parents' => explode(",", env('DRIVE_EXPENSE_PARENT'))
+            'parents' => explode(",", CustomOption::get('DRIVE_EXPENSE_PARENT'))
         ));
 
         $content = Storage::get($file);
