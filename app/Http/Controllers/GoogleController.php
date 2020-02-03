@@ -102,7 +102,7 @@ class GoogleController extends Controller
 
     public function update()
     {
-        $url = $this->getAuthUrl($this->createClient(), ['https://www.googleapis.com/auth/drive.file']);
+        $url = $this->getAuthUrl($this->createClient(), ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/spreadsheets']);
 
         return view('google.auth', compact('url'));
     }

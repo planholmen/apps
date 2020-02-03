@@ -10,6 +10,16 @@ class Expense extends Model
 
     protected $dates = ['approved_at'];
 
+    public function getAmountAttribute($amount)
+    {
+        return number_format((double)$amount, 2, ',', '.');
+    }
+
+    public function setAmountAttribute($amount)
+    {
+        $this->attributes['amount'] = round($amount, 2);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

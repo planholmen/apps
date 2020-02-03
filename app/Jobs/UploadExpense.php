@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use Ajaxray\PHPWatermark\Watermark;
+use App\CustomOption;
 use App\Expense;
 use App\Http\Controllers\GoogleDriveController;
 use App\Mail\FailedExpenseUploadJob;
 use App\User;
-use Google_Service_Drive_DriveFile;
 use Exception;
+use Google_Service_Drive_DriveFile;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,6 +19,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use NMC\ImageWithText\Image;
+use NMC\ImageWithText\Text;
+use setasign\Fpdi\Fpdi;
 
 class UploadExpense implements ShouldQueue
 {
@@ -47,19 +52,62 @@ class UploadExpense implements ShouldQueue
 
         $metadata = new Google_Service_Drive_DriveFile(array(
             'name' => $name,
-            'parents' => explode(",", env('DRIVE_EXPENSE_PARENT'))
+            'parents' => explode(",", CustomOption::get('DRIVE_EXPENSE_PARENT'))
         ));
 
-        $content = Storage::get($file);
+        $extensions = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+        if (in_array(File::extension(Storage::path($file)), $extensions, false)) {
+            $this->addTextToImage($file);
+        }
+
+        if (File::extension(Storage::path($file)) == 'pdf') {
+            $this->addTexToPdf($file);
+        }
 
         GoogleDriveController::createFile($metadata, array(
-            'data' => $content,
+            'data' => Storage::get($file),
             'mimeType' => File::mimeType(Storage::path($file)),
             'uploadType' => 'multipart'
         ));
 
         $this->expense->uploaded = true;
         $this->expense->save();
+    }
+
+    private function addTextToImage($file)
+    {
+        $text = new Text('Bilagsnr.: ' . $this->expense->ph_id);
+        $text->size = 20;
+        $text->font = Storage::path('public/OpenSans-Regular.ttf');
+        $text->startX = 5;
+        $text->startY = 5;
+
+        $image = new Image(Storage::path($file));
+        $image->addText($text);
+        $image->render(Storage::path($file));
+    }
+
+    private function addTexToPdf($file)
+    {
+        // Create instance and get the source file
+        $pdf = new Fpdi();
+        $pageCount = $pdf->setSourceFile(Storage::path($file));
+
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+
+            $tplId = $pdf->importPage($pageNo);
+            $pdf->AddPage();
+            $pdf->useTemplate($tplId, ['adjustPageSize' => true]);
+
+            $pdf->setFont('Helvetica');
+            $pdf->setXY(5,5);
+            $pdf->Write(12, 'Bilagsnr.: ' . $this->expense->ph_id);
+
+        }
+
+        $pdf->Output('F', Storage::path($file));
+
+
     }
 
     /**
@@ -69,6 +117,7 @@ class UploadExpense implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
+        // TODO Refactor to use nicer method to get admins
         foreach (User::all() as $user) {
             if ($user->isAdmin()) {
                 Mail::to($user->email)->send(new FailedExpenseUploadJob($this->expense, $exception));
