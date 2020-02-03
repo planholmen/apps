@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\CustomOption;
 use App\Expense;
 use App\Http\Controllers\GoogleSheetsController;
-use Cassandra\Custom;
 use Google_Service_Sheets_BatchUpdateValuesRequest;
 use Google_Service_Sheets_ValueRange;
 use Illuminate\Bus\Queueable;
@@ -34,6 +33,7 @@ class PostExpense implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle()
     {
@@ -75,10 +75,14 @@ class PostExpense implements ShouldQueue
 
         $res = $service->spreadsheets_values->batchUpdate($sheetId, $body);
 
+        $this->expense->fresh();
+        $this->expense->posted = true;
+        $this->expense->save();
+
     }
 
     private function getNextRow()
     {
-        return count(Expense::where('posted', true)->get()) + 9;
+        return (sizeof(Expense::where('posted', true)->get()) + 9);
     }
 }
