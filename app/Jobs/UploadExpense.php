@@ -77,7 +77,7 @@ class UploadExpense implements ShouldQueue
     {
         $text = new Text('Bilagsnr.: ' . $this->expense->ph_id);
         $text->size = 20;
-        $text->font = '/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf';
+        $text->font = Storage::path('public/OpenSans-Regular.ttf');
         $text->startX = 5;
         $text->startY = 5;
 
