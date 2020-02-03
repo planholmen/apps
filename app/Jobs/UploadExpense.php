@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use NMC\ImageWithText\Image;
 use NMC\ImageWithText\Text;
+use setasign\Fpdi\Fpdi;
 
 class UploadExpense implements ShouldQueue
 {
@@ -59,7 +60,7 @@ class UploadExpense implements ShouldQueue
             $this->addTextToImage($file);
         }
 
-        if (File::extension(Storage::get($file)) == 'pdf') {
+        if (File::extension(Storage::path($file)) == 'pdf') {
             $this->addTexToPdf($file);
         }
 
@@ -88,7 +89,25 @@ class UploadExpense implements ShouldQueue
 
     private function addTexToPdf($file)
     {
-        // TODO Add image to pdf files
+        // Create instance and get the source file
+        $pdf = new Fpdi();
+        $pageCount = $pdf->setSourceFile(Storage::path($file));
+
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+
+            $tplId = $pdf->importPage($pageNo);
+            $pdf->AddPage();
+            $pdf->useTemplate($tplId, ['adjustPageSize' => true]);
+
+            $pdf->setFont('Helvetica');
+            $pdf->setXY(5,5);
+            $pdf->Write(12, 'Bilagsnr.: ' . $this->expense->ph_id);
+
+        }
+
+        $pdf->Output('F', Storage::path($file));
+
+
     }
 
     /**
@@ -98,6 +117,7 @@ class UploadExpense implements ShouldQueue
      */
     public function failed(Exception $exception)
     {
+        // TODO Refactor to use nicer method to get admins
         foreach (User::all() as $user) {
             if ($user->isAdmin()) {
                 Mail::to($user->email)->send(new FailedExpenseUploadJob($this->expense, $exception));
