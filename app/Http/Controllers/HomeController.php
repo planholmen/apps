@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Expense;
 
 class HomeController extends Controller
 {
@@ -24,7 +24,11 @@ class HomeController extends Controller
     public function index()
     {
         $user = \Auth::user();
-        return view('home', compact('user'));
+        $count = sizeof(Expense::where([
+            ['approved', '=', 0],
+            ['approved_at', '=', null]
+        ])->get());
+        return view('home', compact('user', 'count'));
     }
 
     /**
