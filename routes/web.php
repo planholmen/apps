@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'can:accessApprovals'])->group(function () {
     Route::get('/expenses', 'ExpenseController@index');
-    Route::get('/expense/approve/{id?}', 'ExpenseController@approve');
+    Route::get('/expense/approve/{id?}', 'ExpenseController@approve')->name('expenses.approve');
     Route::get('/expense/{id}/accept/{next?}', 'ExpenseController@accept');
     Route::get('/expense/{id}/decline/{next?}', 'ExpenseController@decline');
 });
