@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Expense;
 use App\Mail\ApprovedExpenses;
+use App\Mail\NewExpenses;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class MailController extends Controller
@@ -34,5 +34,22 @@ class MailController extends Controller
             Mail::to($user->email)->send(new ApprovedExpenses($mailExpenses, $user));
         }
 
+    }
+
+    public static function emailNewExpenses()
+    {
+        $expenses = Expense::where('approved', 0)->get();
+        $users = User::all();
+
+        if ( ! empty($expenses) ) {
+
+            foreach ($users as $user) {
+
+                if ($user->isApprover())
+                    Mail::to($user->email)->send(new NewExpenses($user, sizeof($expenses)));
+
+            }
+
+        }
     }
 }
