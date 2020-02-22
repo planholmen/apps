@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {MailController::emailNewExpenses();})->dailyAt('06:00');
+        $schedule->call(function () {MailController::emailExpensesForApproval();})->dailyAt('06:00');
         $schedule->call(function () {MailController::emailApprovedExpenses();})->dailyAt('12:00');
         $schedule->command('queue:work --stop-when-empty')->everyMinute();
     }

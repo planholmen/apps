@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NewExpenses extends Mailable
+class ExpensesForApproval extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -38,6 +38,6 @@ class NewExpenses extends Mailable
 
         return $this->from('it@planholmen.dk', config('app.name'))
                     ->subject('Der er bilag, der venter på godkendelse')
-                    ->markdown('mails.expense.new', compact('user', 'count'));
+                    ->markdown('mails.expense.forapproval', compact('user', 'count'));
     }
 }
