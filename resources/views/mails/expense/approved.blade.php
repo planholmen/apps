@@ -1,7 +1,7 @@
 @component('mail::message')
 Kære {!! $user->name !!}.
 
-Følgende af dine fakturaer er blevet godkendt:
+Følgende af dine bilag er blevet godkendt:
 
 @foreach($expenses as $expense)
 
