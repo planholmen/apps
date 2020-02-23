@@ -41,7 +41,7 @@ class MailController extends Controller
         $expenses = Expense::where('approved', 0)->get();
         $users = User::all();
 
-        if ( ! empty($expenses) ) {
+        if ( sizeof($expenses) > 0 ) {
 
             foreach ($users as $user) {
 
