@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -35,8 +34,8 @@ class ApprovedExpenses extends Mailable
         $expenses = $this->expenses;
         $user = $this->user;
 
-        return $this->from('it@planholmen.dk')
-                    ->replyTo('penge@planholmen.dk', 'PLan Holmen Kasseren')
+        return $this->from('it@planholmen.dk', config('app.name'))
+                    ->replyTo('penge@planholmen.dk', 'PLan Holmen Kassereren')
                     ->subject('Du har fået godkendt bilag!')
                     ->markdown('mails.expense.approved', compact('expenses', 'user'));
     }
