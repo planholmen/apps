@@ -5,7 +5,6 @@ namespace App\Mail;
 use App\Expense;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -38,7 +37,7 @@ class FailedExpenseUploadJob extends Mailable
         $expense = $this->expense;
         $exception = $this->exception;
 
-        return $this->from('it@planholmen.dk')
+        return $this->from('it@planholmen.dk', config('app.name'))
                     ->subject('Upload af bilag ' . $expense->ph_id . ' fejlet')
                     ->markdown('mails.jobs.expense.failed', compact('expense', 'exception'));
     }

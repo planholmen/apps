@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -32,8 +31,8 @@ class DeclineExpense extends Mailable
     {
         $expense = $this->expense;
 
-        return $this->from('it@planholmen.dk')
-                    ->replyTo('penge@planholmen.dk', 'PLan Holmen Kasseren')
+        return $this->from('it@planholmen.dk', config('app.name'))
+                    ->replyTo('penge@planholmen.dk', 'PLan Holmen Kassereren')
                     ->subject('Et af dine bilag er blevet afvist')
                     ->markdown('mails.expense.declined', compact('expense'));
     }

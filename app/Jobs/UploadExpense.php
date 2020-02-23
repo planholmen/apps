@@ -79,6 +79,7 @@ class UploadExpense implements ShouldQueue
         $text = new Text('Bilagsnr.: ' . $this->expense->ph_id);
         $text->size = 20;
         $text->font = Storage::path('public/OpenSans-Regular.ttf');
+        $text->color = 'ff0000';
         $text->startX = 5;
         $text->startY = 5;
 
@@ -100,6 +101,7 @@ class UploadExpense implements ShouldQueue
             $pdf->useTemplate($tplId, ['adjustPageSize' => true]);
 
             $pdf->setFont('Helvetica');
+            $pdf->setTextColor(255, 0, 0);
             $pdf->setXY(5,5);
             $pdf->Write(12, 'Bilagsnr.: ' . $this->expense->ph_id);
 
