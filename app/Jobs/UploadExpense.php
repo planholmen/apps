@@ -64,6 +64,10 @@ class UploadExpense implements ShouldQueue
             $this->addTexToPdf($file);
         }
 
+
+        $this->expense = $this->expense->fresh();
+        $file = 'public/' . $this->expense->file_path;
+
         GoogleDriveController::createFile($metadata, array(
             'data' => Storage::get($file),
             'mimeType' => File::mimeType(Storage::path($file)),
@@ -76,23 +80,37 @@ class UploadExpense implements ShouldQueue
 
     private function addTextToImage($file)
     {
+        $path = Storage::path($file);
+        $image = new Image($path);
+
+        $width = $image->getWidth();
+
         $text = new Text('Bilagsnr.: ' . $this->expense->ph_id);
-        $text->size = 20;
+        $text->size = 2 * ($width / 72);
         $text->font = Storage::path('public/OpenSans-Regular.ttf');
         $text->color = 'ff0000';
         $text->startX = 5;
-        $text->startY = 5;
+        $text->startY = 2 * ($width / 72);
 
-        $image = new Image(Storage::path($file));
         $image->addText($text);
-        $image->render(Storage::path($file));
+
+        $updatedPath = File::dirname($path) . "/" . File::name($path) . '-uploaded.' . File::extension($path);
+
+        $image->render($updatedPath);
+
+        $this->expense->file_path = "expenses/" . File::name($path) . '-uploaded.' . File::extension($path);
+        $this->expense->save();
+
+
     }
 
     private function addTexToPdf($file)
     {
+        $path = Storage::path($file);
+
         // Create instance and get the source file
         $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile(Storage::path($file));
+        $pageCount = $pdf->setSourceFile($path);
 
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
 
@@ -102,12 +120,18 @@ class UploadExpense implements ShouldQueue
 
             $pdf->setFont('Helvetica');
             $pdf->setTextColor(255, 0, 0);
-            $pdf->setXY(5,5);
+            $pdf->setFontSize(18);
+            $pdf->setXY(0,0);
             $pdf->Write(12, 'Bilagsnr.: ' . $this->expense->ph_id);
 
         }
 
-        $pdf->Output('F', Storage::path($file));
+        $updatedPath = File::dirname($path) . "/" . File::name($path) . '-uploaded.' . File::extension($path);
+
+        $pdf->Output('F', $updatedPath);
+
+        $this->expense->file_path = "expenses/" . File::name($path) . '-uploaded.' . File::extension($path);
+        $this->expense->save();
 
 
     }
