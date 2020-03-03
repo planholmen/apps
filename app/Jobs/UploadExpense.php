@@ -76,14 +76,17 @@ class UploadExpense implements ShouldQueue
 
     private function addTextToImage($file)
     {
+        $image = new Image(Storage::path($file));
+
+        $width = $image->getWidth();
+
         $text = new Text('Bilagsnr.: ' . $this->expense->ph_id);
-        $text->size = 20;
+        $text->size = 2 * ($width / 72);
         $text->font = Storage::path('public/OpenSans-Regular.ttf');
         $text->color = 'ff0000';
         $text->startX = 5;
-        $text->startY = 5;
+        $text->startY = 2 * ($width / 72);
 
-        $image = new Image(Storage::path($file));
         $image->addText($text);
         $image->render(Storage::path($file));
     }
@@ -102,7 +105,8 @@ class UploadExpense implements ShouldQueue
 
             $pdf->setFont('Helvetica');
             $pdf->setTextColor(255, 0, 0);
-            $pdf->setXY(5,5);
+            $pdf->setFontSize(18);
+            $pdf->setXY(0,0);
             $pdf->Write(12, 'Bilagsnr.: ' . $this->expense->ph_id);
 
         }
