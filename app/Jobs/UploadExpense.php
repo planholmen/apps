@@ -64,6 +64,10 @@ class UploadExpense implements ShouldQueue
             $this->addTexToPdf($file);
         }
 
+
+        $this->expense = $this->expense->fresh();
+        $file = 'public/' . $this->expense->file_path;
+
         GoogleDriveController::createFile($metadata, array(
             'data' => Storage::get($file),
             'mimeType' => File::mimeType(Storage::path($file)),
@@ -76,7 +80,8 @@ class UploadExpense implements ShouldQueue
 
     private function addTextToImage($file)
     {
-        $image = new Image(Storage::path($file));
+        $path = Storage::path($file);
+        $image = new Image($path);
 
         $width = $image->getWidth();
 
@@ -88,14 +93,24 @@ class UploadExpense implements ShouldQueue
         $text->startY = 2 * ($width / 72);
 
         $image->addText($text);
-        $image->render(Storage::path($file));
+
+        $updatedPath = File::dirname($path) . "/" . File::name($path) . '-uploaded.' . File::extension($path);
+
+        $image->render($updatedPath);
+
+        $this->expense->file_path = "expenses/" . File::name($path) . '-uploaded.' . File::extension($path);
+        $this->expense->save();
+
+
     }
 
     private function addTexToPdf($file)
     {
+        $path = Storage::path($file);
+
         // Create instance and get the source file
         $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile(Storage::path($file));
+        $pageCount = $pdf->setSourceFile($path);
 
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
 
@@ -111,7 +126,12 @@ class UploadExpense implements ShouldQueue
 
         }
 
-        $pdf->Output('F', Storage::path($file));
+        $updatedPath = File::dirname($path) . "/" . File::name($path) . '-uploaded.' . File::extension($path);
+
+        $pdf->Output('F', $updatedPath);
+
+        $this->expense->file_path = "expenses/" . File::name($path) . '-uploaded.' . File::extension($path);
+        $this->expense->save();
 
 
     }
