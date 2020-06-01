@@ -131,7 +131,7 @@ class ExpenseController extends Controller
             $lastId = (int) ltrim($lastId, '0');
 
             if ($lastId < 1000) {
-                $nextId = str_repeat('0', 3 - strlen($lastId)) . ($lastId + 1);
+                $nextId = str_repeat('0', 3 - strlen(++$lastId)) . $lastId;
             } else {
                 $nextId = (string) ($lastId + 1);
             }
