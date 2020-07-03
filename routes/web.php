@@ -34,6 +34,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/drive/transfer', 'DriveController@transfer');
     Route::post('/drive/store', 'DriveController@store');
 
+    // Cars
+    Route::get('cars', 'CarController@index');
+    Route::get('cars/create', 'CarController@create');
+    Route::post('cars', 'CarController@store');
+    Route::patch('cars/{car}', 'CarController@update');
+
     // Users
     Route::get('/user/me', 'UserController@settings');
     Route::post('/user/me/update', 'UserController@update');
