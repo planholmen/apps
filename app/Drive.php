@@ -12,9 +12,7 @@ class Drive extends Model
         'date'
     ];
 
-    protected $fillable = [
-        'date', 'from', 'to', 'purpose', 'distance', 'user_id'
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'posted' => 'boolean',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Car;
 use App\Drive;
 use App\Expense;
 use App\Jobs\PostDriveBook;
@@ -23,7 +24,9 @@ class DriveController extends Controller
 
     public function create()
     {
-        return view('drive.create');
+        $cars = Car::all();
+
+        return view('drive.create', compact('cars'));
     }
 
     public function store(Request $request)
@@ -33,7 +36,8 @@ class DriveController extends Controller
             'from' => 'required|min:2',
             'to' => 'required|min:2',
             'purpose' => 'required|min:2',
-            'distance' => 'required'
+            'distance' => 'required',
+            'car' => 'required|exists:cars,id'
         ]);
 
         Drive::create([
@@ -42,6 +46,7 @@ class DriveController extends Controller
            'to' => $data['to'],
            'purpose' => $data['purpose'],
            'distance' => round($data['distance'], 0),
+           'car_id' => $data['car'],
            'user_id' => Auth::id()
         ]);
 
