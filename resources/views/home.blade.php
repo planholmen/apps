@@ -28,13 +28,6 @@
             <a href="/">{{ env('APP_NAME') }}</a>
         </div>
 
-        @if ( ($user->address == '' || $user->address == null) || ($user->license_plate == '' || $user->license_plate == null) )
-            <div class="sm:w-full lg:w-3/5 mx-auto text-center bg-red-200 text-red-800 p-6 rounded-lg">
-                Du har endnu ikke sat din adresse og nummerplade. Hvis du vil registrere kørsler og indsende en kørebog, skal dette tilføjes først.<br>
-                Du kan tilføje det under "Opdater oplysninger"
-            </div>
-        @endif
-
         @if ($count > 0 && Gate::inspect('accessApprovals', $user)->allowed())
             <div class="sm:w-full lg:w-3/5 mx-auto text-center bg-orange-200 text-orange-800 p-6 mt-2 rounded-lg">
                 Der er {{ $count }} bilag, der skal godkendes.
