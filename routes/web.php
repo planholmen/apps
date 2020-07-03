@@ -24,14 +24,17 @@ Route::get('/auth/login', 'LoginController@login');
 Route::middleware(['auth'])->group(function () {
     Route::get('/auth/logout', 'LoginController@logout')->name('logout');
 
+    // Expenses
     Route::get('/expense/create', 'ExpenseController@create');
     Route::post('/expense/store', 'ExpenseController@store');
 
+    // Drives
     Route::get('/drive', 'DriveController@index');
     Route::get('/drive/create', 'DriveController@create');
     Route::get('/drive/transfer', 'DriveController@transfer');
     Route::post('/drive/store', 'DriveController@store');
 
+    // Users
     Route::get('/user/me', 'UserController@settings');
     Route::post('/user/me/update', 'UserController@update');
 });
