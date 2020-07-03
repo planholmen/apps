@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="my-8 py-4">
-                        <label for="activity">Aktivitet</label>
+                        <label for="activity">Beskrivelse af bilaget (hvad er pengene brug på?)</label>
                         <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="activity" required>
                         @error('activity')
                             <div class="text-red-600 text-lg">{{ $message }}</div>
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="my-8 py-4">
-                        <label for="amount">Beløb</label>
+                        <label for="amount">Beløb (kr.)</label>
                         <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="number" min="0" step="any" name="amount" required>
                         @error('amount')
                             <div class="text-red-600 text-lg">{{ $message }}</div>
