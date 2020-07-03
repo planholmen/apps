@@ -67,6 +67,7 @@ class DriveController extends Controller
                 $drive->save();
             } else {
                 $drive = Drive::find($drive);
+                $drive->posted = true;
                 $drive->save();
             }
         }
