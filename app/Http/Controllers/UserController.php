@@ -19,7 +19,6 @@ class UserController extends Controller
         $user = Auth::user();
 
         $user->address = $request->address;
-        $user->license_plate = $request->license_plate;
 
         $user->save();
 
