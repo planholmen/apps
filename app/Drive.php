@@ -25,4 +25,9 @@ class Drive extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
+
 }

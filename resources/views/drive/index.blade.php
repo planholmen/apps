@@ -26,6 +26,7 @@
 
                     <tr>
                         <th>Dato</th>
+                        <th>Bil</th>
                         <th>Fra</th>
                         <th>Til</th>
                         <th>Antal km</th>
@@ -35,6 +36,7 @@
 
                         <tr>
                             <td>{{ $drive->date->format('d/m/y') }}</td>
+                            <td>{{ $drive->car->license_plate }}</td>
                             <td>{{ $drive->from }}</td>
                             <td>{{ $drive->to }}</td>
                             <td>{{ $drive->distance }}</td>
