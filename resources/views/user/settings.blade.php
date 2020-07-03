@@ -22,11 +22,6 @@
                     </div>
 
                     <div class="my-8 py-4">
-                        <label for="license_plate">Nummerplade:</label>
-                        <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="license_plate" value="{{ $user->license_plate }}">
-                    </div>
-
-                    <div class="my-8 py-4">
                         <input class="block mx-auto px-12 py-4 bg-green-500 text-white rounded-lg cursor-pointer" type="submit" name="submit" value="Opdater!">
                     </div>
 
