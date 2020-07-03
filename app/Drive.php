@@ -12,9 +12,7 @@ class Drive extends Model
         'date'
     ];
 
-    protected $fillable = [
-        'date', 'from', 'to', 'purpose', 'distance', 'user_id'
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'posted' => 'boolean',
@@ -25,6 +23,11 @@ class Drive extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
     }
 
 }

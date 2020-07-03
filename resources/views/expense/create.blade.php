@@ -2,6 +2,10 @@
 
 @section('page_title', 'Opret nyt bilag')
 
+@section('headers')
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+@endsection
+
 @section('content')
 
     <div class="main bg-gray-100 min-h-screen w-full">
@@ -11,6 +15,12 @@
             <div>
                 <a href="/">Opret nyt bilag</a>
             </div>
+
+            @if(session('success'))
+                <div id="js-success-message" class="sm:w-full lg:w-3/5 mx-auto text-center text-xl bg-green-200 text-green-800 p-6 my-8 rounded-lg">
+                    {{ session('success') }}
+                </div>
+            @endif
 
             <form action="/expense/store" method="post" enctype="multipart/form-data">
                 @csrf
@@ -25,7 +35,7 @@
                     </div>
 
                     <div class="my-8 py-4">
-                        <label for="activity">Aktivitet</label>
+                        <label for="activity">Beskrivelse af bilaget (hvad er pengene brug på?)</label>
                         <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="text" name="activity" required>
                         @error('activity')
                             <div class="text-red-600 text-lg">{{ $message }}</div>
@@ -33,7 +43,7 @@
                     </div>
 
                     <div class="my-8 py-4">
-                        <label for="amount">Beløb</label>
+                        <label for="amount">Beløb (kr.)</label>
                         <input class="w-full border-solid border-gray-400 border-2 rounded-lg" type="number" min="0" step="any" name="amount" required>
                         @error('amount')
                             <div class="text-red-600 text-lg">{{ $message }}</div>
@@ -58,5 +68,19 @@
         </div>
 
     </div>
+
+    <script type="text/javascript">
+
+        let successMessage = $('#js-success-message');
+
+        $(document).ready(function () {
+            if ( ! successMessage.hasClass('hidden')) {
+                setTimeout(function () {
+                    successMessage.addClass('hidden');
+                }, 5000);
+            }
+        });
+
+    </script>
 
 @endsection

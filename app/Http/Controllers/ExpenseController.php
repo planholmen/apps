@@ -6,10 +6,8 @@ use App\Expense;
 use App\Jobs\PostExpense;
 use App\Jobs\UploadExpense;
 use App\Mail\DeclineExpense;
-use Google_Service_Drive_DriveFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,7 +54,7 @@ class ExpenseController extends Controller
 
         $expense->save();
 
-        return redirect('/expense/create');
+        return redirect('/expense/create')->with('success', 'Dit bilag er blevet uploadet!');
 
     }
 
