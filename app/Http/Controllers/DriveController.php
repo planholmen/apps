@@ -18,7 +18,15 @@ class DriveController extends Controller
             ['posted', '=', 0],
             ['transferred', '=', 0]
         ])->get();
+
         $user = Auth::user();
+
+        foreach ($drives as $key => $drive) {
+            if ($drive->car->owner->isNot($user)) {
+                $drives->pull($key);
+            }
+        }
+
         return view('drive.index', compact('drives', 'user'));
     }
 
