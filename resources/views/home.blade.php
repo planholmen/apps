@@ -53,6 +53,12 @@
         @endcomponent
 
         @component('components.module')
+            @slot('link', '/sounds')
+            @slot('icon', 'musical-notes-outline')
+            @slot('text', 'Soundboard')
+        @endcomponent
+
+        @component('components.module')
             @slot('link', 'http://mandskab.planholmen.dk')
             @slot('icon', 'people')
             @slot('text', 'Se mandskabsplan')
