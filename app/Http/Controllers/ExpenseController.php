@@ -61,7 +61,6 @@ class ExpenseController extends Controller
     public function approve($id = 0)
     {
         $expenses = Expense::where([
-            ['uploaded', '=', 0],
             ['approved', '=', 0]
         ])->get()->toArray();
 
@@ -78,7 +77,9 @@ class ExpenseController extends Controller
 
         $expense->save();
 
-        UploadExpense::dispatch($expense);
+        if ($expense->file_path != null)
+            UploadExpense::dispatch($expense);
+
         PostExpense::dispatch($expense);
 
         if ( $next != false ) {

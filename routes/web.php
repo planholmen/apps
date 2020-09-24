@@ -40,6 +40,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('cars', 'CarController@store');
     Route::patch('cars/{car}', 'CarController@update');
 
+    // Sounds
+    Route::get('sounds', 'SoundController@index');
+    Route::get('sounds/create', 'SoundController@create');
+    Route::post('sounds', 'SoundController@store');
+
     // Users
     Route::get('/user/me', 'UserController@settings');
     Route::post('/user/me/update', 'UserController@update');
