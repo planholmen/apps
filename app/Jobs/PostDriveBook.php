@@ -106,6 +106,8 @@ class PostDriveBook implements ShouldQueue
         DriveController::post($this->drives);
 
         $expense = Expense::create([
+            'user_id' => $user->id,
+            'department' => 'Team',
             'activity' => 'Team Transport',
             'amount' => $sumMoney,
             'creditor' => $user->name,
