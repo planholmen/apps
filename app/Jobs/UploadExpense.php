@@ -48,7 +48,7 @@ class UploadExpense implements ShouldQueue
     public function handle()
     {
         $file = 'public/' . $this->expense->file_path;
-        $name = $this->expense->ph_id . File::extension($file);
+        $name = $this->expense->ph_id . "." . File::extension($file);
 
         $metadata = new Google_Service_Drive_DriveFile(array(
             'name' => $name,
