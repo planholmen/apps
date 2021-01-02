@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ExpenseController extends Controller
 {
@@ -58,18 +59,48 @@ class ExpenseController extends Controller
 
     }
 
-    public function approve($id = 0)
+    public function approve()
     {
         $expenses = Expense::where([
             ['approved', '=', 0]
         ])->get()->toArray();
 
-        return view('expense.approve', compact('expenses', 'id'));
+        return view('expense.approve', compact('expenses'));
     }
 
-    public function accept($id, $next = false)
+    public function update(Request $request, Expense $expense)
     {
-        $expense = Expense::find($id);
+
+        $data = $request->validate([
+            'department' => 'required|min:2',
+            'activity' => 'required|min:2',
+            'amount' => 'required|numeric|gt:0',
+            'is_accepted' => Rule::in(['true', 'false'])
+        ]);
+
+        $expense->update([
+            'department' => $data['department'],
+            'activity' => $data['activity'],
+            'amount' => $data['amount']
+        ]);
+
+        if (isset($data['is_accepted'])) {
+            switch ($data['is_accepted']) {
+                case "true":
+                    $this->accept($expense);
+                    break;
+
+                case "false":
+                    $this->decline($expense);
+                    break;
+            }
+        }
+
+        return redirect()->to('/expense/approve');
+    }
+
+    private function accept(Expense $expense)
+    {
         $expense->approved = 1;
 
         $expense->ph_id = $this->findNextId();
@@ -81,28 +112,14 @@ class ExpenseController extends Controller
             UploadExpense::dispatch($expense);
 
         PostExpense::dispatch($expense);
-
-        if ( $next != false ) {
-            return redirect()->to('/expense/approve/' . $next);
-        }
-
-        return redirect()->to('/expense/approve');
-
     }
 
-    public function decline($id, $next = false)
+    private function decline(Expense $expense)
     {
-        $expense = Expense::find($id);
         $expense->approved = -1;
         $expense->save();
 
-        if ( $next != false ) {
-            return redirect()->to('/expense/approve/' . $next);
-        }
-
         Mail::to($expense->user->email)->send(new DeclineExpense($expense));
-
-        return redirect()->to('/expense/approve');
     }
 
     public static function transfer() {

@@ -14,5 +14,6 @@
         </div>
         @endauth
         @yield('content')
+        @yield('js')
     </body>
 </html>
