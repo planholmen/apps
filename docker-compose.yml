@@ -9,8 +9,19 @@ services:
       - 80:80
     volumes:
       - ./:/var/www/
+    links:
+      - db:mysql
     environment:
       XDEBUG_CONFIG: "remote_host=host.docker.internal"
-    external_links:
-      - planholmen-db:mysql
     working_dir: /var/www
+
+  db:
+    container_name: 'planholmen-apps-db'
+    image: library/mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: planholmen
+      MYSQL_USER: planholmen
+      MYSQL_PASSWORD: planholmen
+      MYSQL_ROOT_PASSWORD: root
