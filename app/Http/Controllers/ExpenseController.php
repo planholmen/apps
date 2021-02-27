@@ -48,7 +48,7 @@ class ExpenseController extends Controller
 
         $expense->fresh();
 
-        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->id . " - " . $expense->department . " " . str_replace('/', '_', $expense->activity) . " - " . $expense->creditor . "." . $request->file('file')->extension());
+        $path = Storage::putFileAs('public/expenses', $request->file('file'), $expense->id . "_" . $expense->department . "_" . str_replace('/', '_', $expense->activity) . "_" . $expense->creditor . "." . $request->file('file')->extension());
         $path = str_replace('public/', '', $path);
 
         $expense->file_path = $path;

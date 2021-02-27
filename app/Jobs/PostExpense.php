@@ -83,6 +83,6 @@ class PostExpense implements ShouldQueue
 
     private function getNextRow()
     {
-        return (sizeof(Expense::where('posted', true)->get()) + 9);
+        return (sizeof(Expense::where('posted', true)->get()) + 7);
     }
 }
