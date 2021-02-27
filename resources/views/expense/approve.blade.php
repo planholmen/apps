@@ -70,7 +70,7 @@
                                     </div>
 
                                     <div class="pb-4">
-                                        <label for="activity"><strong>Aktivitet</strong></label><br>
+                                        <label for="activity"><strong>Beskrivelse af bilaget</strong></label><br>
                                         <input class="border-2 border-gray-500 px-2 py-1 rounded"
                                                name="activity"
                                                id="activity"
