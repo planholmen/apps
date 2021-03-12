@@ -39,7 +39,7 @@
                     @csrf
                     @method('PATCH')
 
-                    <div class="w-full">
+                    <div class="w-full mt-6">
 
                         <div class="flex">
                             <!-- Info regarding who registered the expense -->
@@ -100,7 +100,7 @@
                             <div class="w-1/2 my-8 mx-auto flex flex-row justify-center">
 
                                 <div class="w-1/3 mr-4">
-                                    <button type="submit" id="deny" class="min-w-full py-4 bg-orange-500 text-white rounded-lg font-bold">Afvis</button>
+                                    <button type="submit" id="deny" class="min-w-full py-4 bg-yellow-500 text-white rounded-lg font-bold">Afvis</button>
                                 </div>
                                 <div class="w-1/3 ml-4">
                                     <button type="submit" id="accept" class="min-w-full py-4 bg-green-500 text-white rounded-lg font-bold">Godkend</button>
