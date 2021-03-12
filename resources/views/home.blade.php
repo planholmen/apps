@@ -29,7 +29,7 @@
         </div>
 
         @if ($count > 0 && Gate::inspect('accessApprovals', $user)->allowed())
-            <div class="sm:w-full lg:w-3/5 mx-auto text-center bg-orange-200 text-orange-800 p-6 mt-2 rounded-lg">
+            <div class="sm:w-full lg:w-3/5 mx-auto text-center bg-yellow-200 text-yellow-800 p-6 mt-2 rounded-lg">
                 Der er {{ $count }} bilag, der skal godkendes.
             </div>
         @endif
