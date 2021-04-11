@@ -16,7 +16,7 @@
         "laravel/tinker": "^2.0",
         "nmcteam/image-with-text": "^2.2",
         "setasign/fpdi-fpdf": "^2.2",
-        "tecnickcom/tc-lib-pdf": "dev-master"
+        "tecnickcom/tc-lib-pdf": "dev-main"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
